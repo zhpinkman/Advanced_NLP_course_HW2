@@ -70,12 +70,13 @@ class NeuralModel(Model):
             inputs[i, :] = text_embedding
         return inputs
 
-    def evaluate(self, dataset: Dataset, batch_size: int):
+    def evaluate(self, wandb, dataset: Dataset, batch_size: int, step: int):
         print('\n')
         print('Evaluating ...')
         print('\n')
         all_predictions = []
         true_labels = []
+        all_losses = []
         data_loader = DataLoader(dataset=dataset, batch_size=batch_size)
         for batch in tqdm(data_loader.get_batches(), leave=False):
             texts = batch[0]
@@ -89,18 +90,41 @@ class NeuralModel(Model):
                 true_labels=labels_ohe,
                 predictions_probs=outputs
             )
+            all_losses.append(loss)
             predictions = np.argmax(outputs, axis=-1)
             predictions = [self.id2label[prediction]
                            for prediction in predictions]
             all_predictions.extend(predictions)
+
+        f1_score = f1_score(y_true=true_labels,
+                            y_pred=all_predictions, average='weighted')
+        acc = accuracy_score(y_true=true_labels, y_pred=all_predictions)
         print('\n')
         print(
-            f"f1 score: {f1_score(y_true=true_labels, y_pred=all_predictions, average='weighted')}")
+            f"f1 score: {f1_score}")
         print(
-            f"Accuracy: {accuracy_score(y_true=true_labels, y_pred=all_predictions)}")
+            f"Accuracy: {acc}")
         print('\n')
+        wandb.log(
+            {
+                "loss": np.mean(all_losses),
+                "f1_score": f1_score,
+                "accuracy": acc
+            },
+            step=step
+        )
 
     def train(self, dataset: Dataset, batch_size: int, num_epochs: int, learning_rate: float):
+        wandb.init(
+            project="Advanced NLP A2",
+            config={
+                "max_seq_len": self.max_seq_len,
+                "num_hidden": self.num_hidden,
+                "learning_rate": learning_rate,
+                "num_epochs": num_epochs,
+                "batch_size": batch_size
+            }
+        )
         data_loader = DataLoader(dataset=dataset, batch_size=batch_size)
         for epoch in tqdm(range(num_epochs), leave=False):
             epoch_loss = []
@@ -131,8 +155,10 @@ class NeuralModel(Model):
             print(f"Loss: {np.mean(epoch_loss)}")
             print('\n')
             self.evaluate(
+                wandb=wandb,
                 dataset=dataset,
-                batch_size=batch_size
+                batch_size=batch_size,
+                step=epoch
             )
 
     def classify(self, input_file):
