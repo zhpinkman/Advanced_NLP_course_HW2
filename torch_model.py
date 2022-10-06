@@ -63,8 +63,40 @@ class TorchModel(Model):
             inputs[i, :] = text_embedding
         return inputs
 
-    def evaluate(self, dataset: Dataset, batch_size: int):
-        raise NotImplementedError()
+    def evaluate(self, dataset: Dataset, batch_size: int, criterion):
+        self.model.eval()
+        all_predictions = []
+        true_labels = []
+        all_losses = []
+        data_loader = DataLoader(dataset=dataset, batch_size=batch_size)
+        with torch.no_grad():
+            for batch in tqdm(data_loader.get_batches(), leave=False):
+                texts = batch[0]
+                labels = batch[1]
+                true_labels.extend(list(labels))
+                inputs = self.tokenize(texts=texts)
+                labels = torch.from_numpy(np.array([self.label2id[label]
+                                                    for label in labels]))
+
+                outputs = self.model(torch.from_numpy(inputs).float())
+
+                loss = criterion(outputs, labels)
+                all_losses.append(loss.item())
+
+                predictions = np.argmax(outputs.numpy(), axis=-1)
+                predictions = [self.id2label[prediction]
+                               for prediction in predictions]
+                all_predictions.extend(predictions)
+
+        f1 = f1_score(y_true=true_labels,
+                      y_pred=all_predictions, average='weighted')
+        acc = accuracy_score(y_true=true_labels, y_pred=all_predictions)
+
+        return {
+            "loss": np.mean(all_losses),
+            "f1": f1,
+            "acc": acc
+        }
 
     def train(
         self,
@@ -76,6 +108,18 @@ class TorchModel(Model):
         dev_dataset: Dataset = None,
         test_dataset: Dataset = None
     ):
+
+        wandb.init(
+            project=f"Advanced NLP A2 - {wandb_comment}",
+            config={
+                "max_seq_len": self.max_seq_len,
+                "num_hidden": self.num_hidden,
+                "learning_rate": learning_rate,
+                "num_epochs": num_epochs,
+                "batch_size": batch_size
+            }
+        )
+
         self.model.train()
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
@@ -98,7 +142,39 @@ class TorchModel(Model):
                 optimizer.step()
                 optimizer.zero_grad()
 
-            print(np.mean(epoch_loss))
+            all_metrics = dict()
+            train_metrics = self.evaluate(
+                dataset=dataset,
+                batch_size=batch_size,
+                criterion=criterion
+            )
+            all_metrics.update(
+                {f"train_{key}": val for key, val in train_metrics.items()})
+            if dev_dataset:
+                dev_metrics = self.evaluate(
+                    dataset=dev_dataset,
+                    batch_size=batch_size,
+                    criterion=criterion
+                )
+                all_metrics.update(
+                    {f"dev_{key}": val for key, val in dev_metrics.items()})
+                print('\n')
+                print("Epoch: {:>3} | Loss: ".format(epoch) + f"{all_metrics['train_loss']:.4}" + " | Valid loss: " +
+                      f"{all_metrics['dev_loss']:.4} | F1 : " + f"{all_metrics['train_f1']:.4} | Valid F1: " + f"{all_metrics['dev_f1']:.4}")
+
+            wandb.log(all_metrics, step=epoch)
+        if test_dataset:
+            test_metrics = self.evaluate(
+                dataset=test_dataset,
+                batch_size=batch_size,
+                criterion=criterion
+            )
+            print('Evaluating Test Dataset')
+            print(
+                "Test F1: " +
+                f"{test_metrics['f1']:.4e} | Test Acc: " +
+                f"{test_metrics['acc']:.4e} "
+            )
 
     def classify(self, input_file):
         pass
