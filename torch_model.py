@@ -1,10 +1,13 @@
 from typing import List
+import torch.optim as optim
 import wandb
 from tqdm import tqdm
 from dataset import DataLoader, Dataset
 from model import Model
 import numpy as np
 from IPython import embed
+import torch
+import torch.nn as nn
 import io
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import f1_score, accuracy_score
@@ -33,6 +36,12 @@ class TorchModel(Model):
         ))
         self.id2label = {v: k for k, v in self.label2id.items()}
         self.ohe.fit(np.array(list(self.id2label.keys())).reshape(-1, 1))
+
+        self.model = nn.Sequential(
+            nn.Linear(self.num_features*self.max_seq_len, self.num_hidden),
+            nn.ReLU(),
+            nn.Linear(self.num_hidden, len(self.label_set))
+        )
 
     def tokenize(self, texts: List[str]):
         inputs = np.zeros(
@@ -67,7 +76,29 @@ class TorchModel(Model):
         dev_dataset: Dataset = None,
         test_dataset: Dataset = None
     ):
-        raise NotImplementedError()
+        self.model.train()
+        criterion = nn.CrossEntropyLoss()
+        optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
+
+        data_loader = DataLoader(dataset=dataset, batch_size=batch_size)
+        for epoch in tqdm(range(num_epochs), leave=False):
+            epoch_loss = []
+            for batch in tqdm(data_loader.get_batches(), leave=False):
+                texts = batch[0]
+                labels = batch[1]
+                inputs = self.tokenize(texts=texts)
+                labels = torch.from_numpy(np.array([self.label2id[label]
+                                                    for label in labels]))
+
+                outputs = self.model(torch.from_numpy(inputs).float())
+
+                loss = criterion(outputs, labels)
+                epoch_loss.append(loss.item())
+                loss.backward()
+                optimizer.step()
+                optimizer.zero_grad()
+
+            print(np.mean(epoch_loss))
 
     def classify(self, input_file):
         pass

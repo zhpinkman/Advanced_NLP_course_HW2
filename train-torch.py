@@ -1,13 +1,14 @@
 import pickle
 import argparse
 from dataset import Dataset
-from neural_model import NeuralModel
 import numpy as np
+
+from torch_model import TorchModel
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Neural net training arguments.')
+        description='PyTorch Implementation of Neural net training arguments.')
 
     parser.add_argument('-u', type=int, help='number of hidden units')
     parser.add_argument('-l', type=float, help='learning rate')
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     test_dataset = Dataset(file=args.test_text, with_labels=False).load_labels(
         file=args.test_labels)
 
-    model = NeuralModel(
+    model = TorchModel(
         num_hidden=args.u,
         max_seq_len=args.f,
         embedding_file=args.E,
