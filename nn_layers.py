@@ -1,6 +1,9 @@
 import numpy as np
 from IPython import embed
 from abc import ABC, abstractmethod
+import random
+random.seed(77)
+np.random.seed(77)
 
 
 class NNComp(ABC):
@@ -58,11 +61,12 @@ class FeedForwardNetwork(NNComp):
         # Weight matrices
 
         self.W1 = np.random.randn(
-            num_features * max_seq_len, num_hidden) * 0.01
-        self.b1 = np.random.randn(1, num_hidden) * 0.01
+            num_features * max_seq_len, num_hidden) * np.sqrt(2/(num_features * max_seq_len))
+        self.b1 = np.zeros(shape=[1, num_hidden])
 
-        self.W2 = np.random.randn(num_hidden, num_labels) * 0.01
-        self.b2 = np.random.randn(1, num_labels) * 0.01
+        self.W2 = np.random.randn(
+            num_hidden, num_labels) * np.sqrt(2/num_hidden)
+        self.b2 = np.zeros(shape=[1, num_labels])
 
         # To compute the gradient in the backward pass
         self.x = None

@@ -1,7 +1,6 @@
 from typing import List
 import wandb
 from tqdm import tqdm
-from matplotlib.pyplot import text
 from dataset import DataLoader, Dataset
 from model import Model
 from nn_layers import FeedForwardNetwork
@@ -70,10 +69,7 @@ class NeuralModel(Model):
             inputs[i, :] = text_embedding
         return inputs
 
-    def evaluate(self, wandb, dataset: Dataset, batch_size: int, step: int):
-        print('\n')
-        print('Evaluating ...')
-        print('\n')
+    def evaluate(self, dataset: Dataset, batch_size: int):
         all_predictions = []
         true_labels = []
         all_losses = []
@@ -96,27 +92,29 @@ class NeuralModel(Model):
                            for prediction in predictions]
             all_predictions.extend(predictions)
 
-        f1_score = f1_score(y_true=true_labels,
-                            y_pred=all_predictions, average='weighted')
+        f1 = f1_score(y_true=true_labels,
+                      y_pred=all_predictions, average='weighted')
         acc = accuracy_score(y_true=true_labels, y_pred=all_predictions)
-        print('\n')
-        print(
-            f"f1 score: {f1_score}")
-        print(
-            f"Accuracy: {acc}")
-        print('\n')
-        wandb.log(
-            {
-                "loss": np.mean(all_losses),
-                "f1_score": f1_score,
-                "accuracy": acc
-            },
-            step=step
-        )
 
-    def train(self, dataset: Dataset, batch_size: int, num_epochs: int, learning_rate: float):
+        return {
+            "loss": np.mean(all_losses),
+            "f1": f1,
+            "acc": acc
+        }
+
+    def train(
+        self,
+        dataset: Dataset,
+        batch_size: int,
+        num_epochs: int,
+        learning_rate: float,
+        wandb_comment: str,
+        dev_dataset: Dataset = None,
+        test_dataset: Dataset = None
+    ):
+
         wandb.init(
-            project="Advanced NLP A2",
+            project=f"Advanced NLP A2 - {wandb_comment}",
             config={
                 "max_seq_len": self.max_seq_len,
                 "num_hidden": self.num_hidden,
@@ -151,14 +149,36 @@ class NeuralModel(Model):
                     derivates=derivates,
                     learning_rate=learning_rate
                 )
-            print('\n')
-            print(f"Loss: {np.mean(epoch_loss)}")
-            print('\n')
-            self.evaluate(
-                wandb=wandb,
+
+            all_metrics = dict()
+            train_metrics = self.evaluate(
                 dataset=dataset,
-                batch_size=batch_size,
-                step=epoch
+                batch_size=batch_size
+            )
+            all_metrics.update(
+                {f"train_{key}": val for key, val in train_metrics.items()})
+            if dev_dataset:
+                dev_metrics = self.evaluate(
+                    dataset=dev_dataset,
+                    batch_size=batch_size
+                )
+                all_metrics.update(
+                    {f"dev_{key}": val for key, val in dev_metrics.items()})
+                print('\n')
+                print("Epoch: {:>3} | Loss: ".format(epoch) + f"{all_metrics['train_loss']:.4e}" + " | Valid loss: " +
+                      f"{all_metrics['dev_loss']:.4e} | F1 : " + f"{all_metrics['train_f1']:.4e} | Valid F1: " + f"{all_metrics['dev_f1']:.4e}")
+
+            wandb.log(all_metrics, step=epoch)
+        if test_dataset:
+            test_metrics = self.evaluate(
+                dataset=test_dataset,
+                batch_size=batch_size
+            )
+            print('Evaluating Test Dataset')
+            print(
+                "Test F1: " +
+                f"{test_metrics['f1']:.4e} | Test Acc: " +
+                f"{test_metrics['acc']:.4e} "
             )
 
     def classify(self, input_file):

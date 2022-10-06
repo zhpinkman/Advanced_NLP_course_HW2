@@ -27,3 +27,4 @@ unk-eng.vec
 **/__pycache__/**
 source.ipynb
 *.model
+wandb/**

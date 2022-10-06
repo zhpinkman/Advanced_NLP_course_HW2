@@ -27,6 +27,7 @@ class Dataset:
     def load_labels(self, file: str):
         with open(file, 'r') as f:
             self.labels = f.read().splitlines()
+        return self
 
     def __len__(self):
         return len(self.texts)
