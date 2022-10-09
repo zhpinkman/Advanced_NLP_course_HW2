@@ -28,6 +28,15 @@ def relu(x: np.array) -> np.array:
     return np.multiply(x, x > 0)
 
 
+def sigmoid(x: np.array) -> np.array:
+    return 1/(1 + np.exp(-x))
+
+
+def d_sigmoid(x: np.array, incoming_grad: np.array) -> np.array:
+    sigma = sigmoid(x)
+    return np.multiply(np.multiply(sigma, 1 - sigma), incoming_grad)
+
+
 def softmax(x: np.array) -> np.array:
     return np.exp(x) / np.sum(np.exp(x), axis=1, keepdims=True)
 
@@ -52,11 +61,15 @@ class FeedForwardNetwork(NNComp):
     other NNComp objects.
     """
 
-    def __init__(self, num_hidden: int, max_seq_len: int, num_features: int, num_labels: int):
+    def __init__(self, num_hidden: int, num_hidden_second: int, weight_decay: float, max_seq_len: int, num_features: int, num_labels: int):
         self.num_hidden = num_hidden
+        self.num_hidden_second = num_hidden_second
+        self.weight_decay = weight_decay
         self.max_seq_len = max_seq_len
         self.num_features = num_features
         self.num_labels = num_labels
+        self.activation_func = sigmoid
+        self.d_activation_func = d_sigmoid
 
         # Weight matrices
 
@@ -65,8 +78,12 @@ class FeedForwardNetwork(NNComp):
         self.b1 = np.zeros(shape=[1, num_hidden])
 
         self.W2 = np.random.randn(
-            num_hidden, num_labels) * np.sqrt(2/num_hidden)
-        self.b2 = np.zeros(shape=[1, num_labels])
+            num_hidden, num_hidden_second) * np.sqrt(2/(num_hidden))
+        self.b2 = np.zeros(shape=[1, num_hidden_second])
+
+        self.W3 = np.random.randn(
+            num_hidden_second, num_labels) * np.sqrt(2/num_hidden_second)
+        self.b3 = np.zeros(shape=[1, num_labels])
 
         # To compute the gradient in the backward pass
         self.x = None
@@ -74,34 +91,65 @@ class FeedForwardNetwork(NNComp):
         self.a1 = None
         self.z2 = None
         self.a2 = None
+        self.z3 = None
+        self.a3 = None
 
     def forward(self, x: np.array):
         self.x = x
         z1 = x @ self.W1 + self.b1
         self.z1 = z1
-        a1 = relu(z1)
+        a1 = self.activation_func(z1)
         self.a1 = a1
 
         z2 = a1 @ self.W2 + self.b2
         self.z2 = z2
-
-        a2 = softmax(z2)
+        a2 = self.activation_func(z2)
         self.a2 = a2
-        return a2
+
+        z3 = a2 @ self.W3 + self.b3
+        self.z3 = z3
+
+        a3 = softmax(z3)
+        self.a3 = a3
+        return a3
+
+    @property
+    def params(self):
+        return {
+            'W1': self.W1,
+            'W2': self.W2,
+            'W3': self.W3,
+            'b1': self.b1,
+            'b2': self.b2,
+            'b3': self.b3
+        }
 
     def backward(self, incoming_grad):
-        # incoming_grad being dZ2
+        # incoming_grad being dZ3
+        dz3 = incoming_grad
+        num_examples = incoming_grad.shape[0]
 
-        dW2 = self.a1.T @ incoming_grad
-        db2 = np.mean(incoming_grad, axis=0, keepdims=True)
+        dW3 = (self.a2.T @ dz3) / num_examples
+        # self.weight_decay * self.W3
+        db3 = np.mean(dz3, axis=0, keepdims=True)
 
-        da1 = incoming_grad @ self.W2.T
-        dz1 = d_relu(self.z1, da1)
+        da2 = dz3 @ self.W3.T
+        dz2 = self.d_activation_func(self.z2, da2)
 
-        dW1 = self.x.T @ dz1
+        dW2 = (self.a1.T @ dz2) / num_examples
+        # self.weight_decay * self.W2
+        db2 = np.mean(dz2, axis=0, keepdims=True)
+
+        da1 = dz2 @ self.W2.T
+        dz1 = self.d_activation_func(self.z1, da1)
+
+        dW1 = (self.x.T @ dz1) / num_examples
+        # self.weight_decay * self.W1
         db1 = np.mean(dz1, axis=0, keepdims=True)
 
         derivatives = {
+            'dW3': dW3,
+            'db3': db3,
             'dW2': dW2,
             'db2': db2,
             'dW1': dW1,
@@ -114,3 +162,5 @@ class FeedForwardNetwork(NNComp):
         self.b1 -= learning_rate * derivates['db1']
         self.W2 -= learning_rate * derivates['dW2']
         self.b2 -= learning_rate * derivates['db2']
+        self.W3 -= learning_rate * derivates['dW3']
+        self.b3 -= learning_rate * derivates['db3']

@@ -8,3 +8,4 @@ unk-eng.vec
 source.ipynb
 *.model
 wandb/**
+__MACOSX/**

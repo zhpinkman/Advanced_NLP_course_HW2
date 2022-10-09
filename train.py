@@ -10,12 +10,16 @@ if __name__ == '__main__':
         description='Neural net training arguments.')
 
     parser.add_argument('-u', type=int, help='number of hidden units')
+    parser.add_argument(
+        '-s', type=int, help="number of hidden units in the second layer")
     parser.add_argument('-l', type=float, help='learning rate')
     parser.add_argument('-f', type=int, help='max sequence length')
     parser.add_argument('-b', type=int, help='mini-batch size')
     parser.add_argument('-e', type=int, help='number of epochs to train for')
     parser.add_argument('-E', type=str, help='word embedding file')
     parser.add_argument('-i', type=str, help='training file')
+    parser.add_argument(
+        '-w', type=float, help="weight decay for l2 regularization", default=0)
     parser.add_argument(
         '--dev_text', help="text file of the dev split", type=str)
     parser.add_argument(
@@ -40,6 +44,8 @@ if __name__ == '__main__':
 
     model = NeuralModel(
         num_hidden=args.u,
+        num_hidden_second=args.s,
+        weight_decay=args.w,
         max_seq_len=args.f,
         embedding_file=args.E,
         label_set=train_dataset.label_set

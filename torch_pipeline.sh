@@ -11,14 +11,15 @@
 #     --dev_labels datasets/custom_dataset/products.train.dev_labels.txt \
 #     --test_text datasets/custom_dataset/products.train.test.txt \
 #     --test_labels datasets/custom_dataset/products.train.test_labels.txt \
-#     --wandb_comment "torch products"
+#     --wandb_comment "products torch"
 
 # Works TODO: but have to improve the results. They're pretty poor 
 python3 train-torch.py \
-    -u 256 \
-    -l 5e-4 \
+    -u 128 \
+    -s 64 \
+    -l 5e-3 \
     -f 300 \
-    -b 32 \
+    -b 16 \
     -e 40 \
     -E glove.6B.50d.txt \
     -i datasets/custom_dataset/4dim.train.train.txt \
@@ -27,7 +28,7 @@ python3 train-torch.py \
     --dev_labels datasets/custom_dataset/4dim.train.dev_labels.txt \
     --test_text datasets/custom_dataset/4dim.train.test.txt \
     --test_labels datasets/custom_dataset/4dim.train.test_labels.txt \
-    --wandb_comment "torch 4dim"
+    --wandb_comment "4dim torch"
 
 # Doesn't work, because of the embedding file, FIXME: so have to fix the reader
 
@@ -44,7 +45,7 @@ python3 train-torch.py \
 #     --dev_labels datasets/custom_dataset/questions.train.dev_labels.txt \
 #     --test_text datasets/custom_dataset/questions.train.test.txt \
 #     --test_labels datasets/custom_dataset/questions.train.test_labels.txt \
-#     --wandb_comment "torch questions"
+#     --wandb_comment "questions torch"
 
 
 
@@ -63,4 +64,4 @@ python3 train-torch.py \
 #     --dev_labels datasets/custom_dataset/odia.train.dev_labels.txt \
 #     --test_text datasets/custom_dataset/odia.train.test.txt \
 #     --test_labels datasets/custom_dataset/odia.train.test_labels.txt \
-#     --wandb_comment "torch odia"
+#     --wandb_comment "odia torch"

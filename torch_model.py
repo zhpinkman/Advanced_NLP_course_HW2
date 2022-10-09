@@ -9,6 +9,7 @@ from IPython import embed
 import torch
 import torch.nn as nn
 import io
+import re
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import f1_score, accuracy_score
 
@@ -23,8 +24,9 @@ def load_vectors(fname):
 
 
 class TorchModel(Model):
-    def __init__(self, num_hidden: int, max_seq_len: int, embedding_file: str, label_set: set):
+    def __init__(self, num_hidden: int, num_hidden_second: int, max_seq_len: int, embedding_file: str, label_set: set):
         self.num_hidden = num_hidden
+        self.num_hidden_second = num_hidden_second
         self.embedding = load_vectors(fname=embedding_file)
         self.max_seq_len = max_seq_len
         self.num_features = list(self.embedding.values())[0].shape[0]
@@ -40,18 +42,31 @@ class TorchModel(Model):
         self.model = nn.Sequential(
             nn.Linear(self.num_features*self.max_seq_len, self.num_hidden),
             nn.ReLU(),
-            nn.Linear(self.num_hidden, len(self.label_set))
+            nn.Linear(self.num_hidden, self.num_hidden_second),
+            nn.ReLU(),
+            nn.Linear(self.num_hidden_second, len(self.label_set))
         )
+
+    def preprocess(self, text: str) -> str:
+        text = text.lower()
+        text = re.sub('([-/.,!?()])', r' \1 ', text)
+        text = re.sub('\s{2,}', ' ', text)
+        text = re.sub("didn't", "did not", text)
+        text = re.sub("wasn't", "was not", text)
+        text = re.sub("weren't", "were not", text)
+        text = re.sub(r'[^\w\s]', '', text)
+        return text
 
     def tokenize(self, texts: List[str]):
         inputs = np.zeros(
             shape=[len(texts), self.max_seq_len * self.num_features])
         for i, text in enumerate(texts):
             text_embedding = list()
-            words = text.lower().split()
+            words = self.preprocess(text).split()
             for word in words[:min(len(words), self.max_seq_len)]:
-                if word in self.embedding:
-                    text_embedding.extend(self.embedding[word].tolist())
+                if word.strip() in self.embedding:
+                    text_embedding.extend(
+                        self.embedding[word.strip()].tolist())
                 else:
                     text_embedding.extend(self.embedding['UNK'].tolist())
 
@@ -61,6 +76,7 @@ class TorchModel(Model):
             text_embedding = np.pad(text_embedding, pad_width=(
                 0, padding_length), constant_values=[0, 0])
             inputs[i, :] = text_embedding
+
         return inputs
 
     def evaluate(self, dataset: Dataset, batch_size: int, criterion):
