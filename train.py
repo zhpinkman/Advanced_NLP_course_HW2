@@ -9,9 +9,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Neural net training arguments.')
 
-    parser.add_argument('-u', type=int, help='number of hidden units')
     parser.add_argument(
-        '-s', type=int, help="number of hidden units in the second layer")
+        '-u', type=str, help='number of hidden units seperated by comma')
     parser.add_argument('-l', type=float, help='learning rate')
     parser.add_argument('-f', type=int, help='max sequence length')
     parser.add_argument('-b', type=int, help='mini-batch size')
@@ -43,12 +42,12 @@ if __name__ == '__main__':
         file=args.test_labels)
 
     model = NeuralModel(
-        num_hidden=args.u,
-        num_hidden_second=args.s,
+        num_hiddens=[int(num) for num in args.u.split(',')],
         weight_decay=args.w,
         max_seq_len=args.f,
         embedding_file=args.E,
-        label_set=train_dataset.label_set
+        label_set=train_dataset.label_set,
+        data_file_name = args.i
     )
 
     model.train(

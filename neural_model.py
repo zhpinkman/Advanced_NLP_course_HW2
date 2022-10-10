@@ -27,18 +27,15 @@ def loss_func(true_labels: np.array, predictions_probs: np.array, params, epsilo
     true_labels_probs = np.sum(np.multiply(
         true_labels, predictions_probs), axis=-1)
     return - np.mean(np.log(true_labels_probs))
-    # + \
-    # (np.sum(np.square(params['W1'])) + np.sum(np.square(params['W2'])) +
-    #  np.sum(np.square(params['W3']))) / 2
 
 
 class NeuralModel(Model):
-    def __init__(self, num_hidden: int, num_hidden_second: int, weight_decay: float, max_seq_len: int, embedding_file: str, label_set: set):
-        self.num_hidden = num_hidden
-        self.num_hidden_second = num_hidden_second
+    def __init__(self, num_hiddens: List[int], weight_decay: float, max_seq_len: int, embedding_file: str, label_set: set, data_file_name: str):
+        self.num_hiddens = num_hiddens
         self.weight_decay = weight_decay
         self.embedding = load_vectors(fname=embedding_file)
         self.max_seq_len = max_seq_len
+        self.data_file_name = data_file_name
         self.num_features = list(self.embedding.values())[0].shape[0]
         self.label_set = label_set
         self.ohe = OneHotEncoder()
@@ -50,8 +47,7 @@ class NeuralModel(Model):
         self.ohe.fit(np.array(list(self.id2label.keys())).reshape(-1, 1))
 
         self.network = FeedForwardNetwork(
-            num_hidden=num_hidden,
-            num_hidden_second=num_hidden_second,
+            num_hiddens=num_hiddens,
             weight_decay=weight_decay,
             max_seq_len=max_seq_len,
             num_features=self.num_features,
@@ -74,8 +70,10 @@ class NeuralModel(Model):
         for i, text in enumerate(texts):
             unk_counter = 0
             text_embedding = list()
-            words = self.preprocess(text).split()
-            # words = text.split()
+            if 'odia' not in self.data_file_name:
+                words = self.preprocess(text).split()
+            else:
+                words = text.split()
 
             for word in words[:min(len(words), self.max_seq_len)]:
                 if word.strip() in self.embedding:
@@ -145,7 +143,7 @@ class NeuralModel(Model):
             project=f"Advanced NLP A2 - {wandb_comment}",
             config={
                 "max_seq_len": self.max_seq_len,
-                "num_hidden": self.num_hidden,
+                "num_hiddens": self.num_hiddens,
                 "learning_rate": learning_rate,
                 "num_epochs": num_epochs,
                 "batch_size": batch_size
@@ -175,7 +173,6 @@ class NeuralModel(Model):
                 )
 
                 self.network.update_weights(
-                    derivates=derivates,
                     learning_rate=learning_rate
                 )
 

@@ -1,6 +1,7 @@
 import numpy as np
 from IPython import embed
 from abc import ABC, abstractmethod
+from typing import List
 import random
 random.seed(77)
 np.random.seed(77)
@@ -61,9 +62,8 @@ class FeedForwardNetwork(NNComp):
     other NNComp objects.
     """
 
-    def __init__(self, num_hidden: int, num_hidden_second: int, weight_decay: float, max_seq_len: int, num_features: int, num_labels: int):
-        self.num_hidden = num_hidden
-        self.num_hidden_second = num_hidden_second
+    def __init__(self, num_hiddens: List[int], weight_decay: float, max_seq_len: int, num_features: int, num_labels: int):
+        self.num_hiddens = num_hiddens
         self.weight_decay = weight_decay
         self.max_seq_len = max_seq_len
         self.num_features = num_features
@@ -73,94 +73,72 @@ class FeedForwardNetwork(NNComp):
 
         # Weight matrices
 
-        self.W1 = np.random.randn(
-            num_features * max_seq_len, num_hidden) * np.sqrt(2/(num_features * max_seq_len))
-        self.b1 = np.zeros(shape=[1, num_hidden])
+        self.params = dict()
+        self.params['W1'] = np.random.randn(
+            num_features * max_seq_len, self.num_hiddens[0]) * np.sqrt(2/(num_features * max_seq_len))
+        self.params['b1'] = np.zeros(shape=[1, self.num_hiddens[0]])
 
-        self.W2 = np.random.randn(
-            num_hidden, num_hidden_second) * np.sqrt(2/(num_hidden))
-        self.b2 = np.zeros(shape=[1, num_hidden_second])
+        for i in range(1, len(self.num_hiddens)):
+            index = i + 1
+            self.params[f"W{index}"] = np.random.randn(
+                self.num_hiddens[i - 1], self.num_hiddens[i]) * np.sqrt(2/(self.num_hiddens[i - 1]))
+            self.params[f"b{index}"] = np.zeros(shape=[1, self.num_hiddens[i]])
 
-        self.W3 = np.random.randn(
-            num_hidden_second, num_labels) * np.sqrt(2/num_hidden_second)
-        self.b3 = np.zeros(shape=[1, num_labels])
+        self.params[f"W{len(self.num_hiddens) + 1}"] = np.random.randn(
+            self.num_hiddens[-1], num_labels) * np.sqrt(2/self.num_hiddens[-1])
+        self.params[f"b{len(self.num_hiddens) + 1}"] = np.zeros(
+            shape=[1, num_labels])
 
         # To compute the gradient in the backward pass
-        self.x = None
-        self.z1 = None
-        self.a1 = None
-        self.z2 = None
-        self.a2 = None
-        self.z3 = None
-        self.a3 = None
+
+        self.params['x'] = None
+        for i in range(len(self.num_hiddens) + 1):
+            index = i + 1
+            self.params[f"z{index}"] = None
+            self.params[f"a{index}"] = None
 
     def forward(self, x: np.array):
-        self.x = x
-        z1 = x @ self.W1 + self.b1
-        self.z1 = z1
-        a1 = self.activation_func(z1)
-        self.a1 = a1
+        self.params['x'] = x
 
-        z2 = a1 @ self.W2 + self.b2
-        self.z2 = z2
-        a2 = self.activation_func(z2)
-        self.a2 = a2
+        self.params["z1"] = x @ self.params["W1"] + self.params["b1"]
+        self.params["a1"] = self.activation_func(self.params["z1"])
 
-        z3 = a2 @ self.W3 + self.b3
-        self.z3 = z3
+        for i in range(1, len(self.num_hiddens)):
+            index = i + 1
+            self.params[f"z{index}"] = self.params[f"a{index - 1}"] @ self.params[f"W{index}"] + \
+                self.params[f"b{index}"]
+            self.params[f"a{index}"] = self.activation_func(
+                self.params[f"z{index}"])
 
-        a3 = softmax(z3)
-        self.a3 = a3
-        return a3
-
-    @property
-    def params(self):
-        return {
-            'W1': self.W1,
-            'W2': self.W2,
-            'W3': self.W3,
-            'b1': self.b1,
-            'b2': self.b2,
-            'b3': self.b3
-        }
+        self.params[f"z{len(self.num_hiddens) + 1}"] = self.params[f"a{len(self.num_hiddens)}"] @ self.params[f"W{len(self.num_hiddens) + 1}"] + \
+            self.params[f"b{len(self.num_hiddens) + 1}"]
+        self.params[f"a{len(self.num_hiddens) + 1}"] = softmax(
+            self.params[f"z{len(self.num_hiddens) + 1}"])
+        return self.params[f"a{len(self.num_hiddens) + 1}"]
 
     def backward(self, incoming_grad):
-        # incoming_grad being dZ3
-        dz3 = incoming_grad
+        # incoming_grad being dZ{len(self.num_hiddens) + 1}
+        self.params[f"dz{len(self.num_hiddens) + 1}"] = incoming_grad
         num_examples = incoming_grad.shape[0]
 
-        dW3 = (self.a2.T @ dz3) / num_examples
-        # self.weight_decay * self.W3
-        db3 = np.mean(dz3, axis=0, keepdims=True)
+        for i in range(len(self.num_hiddens), 0, -1):
+            index = i + 1
+            self.params[f"dW{index}"] = (
+                self.params[f"a{index - 1}"].T @ self.params[f"dz{index}"]) / num_examples
+            self.params[f"db{index}"] = np.mean(
+                self.params[f"dz{index}"], axis=0, keepdims=True)
+            self.params[f"da{index - 1}"] = self.params[f"dz{index}"] @ self.params[f"W{index}"].T
+            self.params[f"dz{index - 1}"] = self.d_activation_func(
+                self.params[f"z{index - 1}"], self.params[f"da{index - 1}"])
 
-        da2 = dz3 @ self.W3.T
-        dz2 = self.d_activation_func(self.z2, da2)
+        self.params["dW1"] = (self.params["x"].T @
+                              self.params["dz1"]) / num_examples
+        self.params["db1"] = np.mean(self.params["dz1"], axis=0, keepdims=True)
 
-        dW2 = (self.a1.T @ dz2) / num_examples
-        # self.weight_decay * self.W2
-        db2 = np.mean(dz2, axis=0, keepdims=True)
-
-        da1 = dz2 @ self.W2.T
-        dz1 = self.d_activation_func(self.z1, da1)
-
-        dW1 = (self.x.T @ dz1) / num_examples
-        # self.weight_decay * self.W1
-        db1 = np.mean(dz1, axis=0, keepdims=True)
-
-        derivatives = {
-            'dW3': dW3,
-            'db3': db3,
-            'dW2': dW2,
-            'db2': db2,
-            'dW1': dW1,
-            'db1': db1
-        }
-        return derivatives
-
-    def update_weights(self, derivates, learning_rate):
-        self.W1 -= learning_rate * derivates['dW1']
-        self.b1 -= learning_rate * derivates['db1']
-        self.W2 -= learning_rate * derivates['dW2']
-        self.b2 -= learning_rate * derivates['db2']
-        self.W3 -= learning_rate * derivates['dW3']
-        self.b3 -= learning_rate * derivates['db3']
+    def update_weights(self, learning_rate):
+        for i in range(len(self.num_hiddens) + 1):
+            index = i + 1
+            self.params[f"W{index}"] -= learning_rate * \
+                self.params[f"dW{index}"]
+            self.params[f"b{index}"] -= learning_rate * \
+                self.params[f"db{index}"]
