@@ -52,6 +52,19 @@ def d_relu(x: np.array, incoming_grad: np.array):
     return np.multiply(incoming_grad, dx)
 
 
+class DropoutLayer(NNComp):
+    def __init__(self, prob: float = 0) -> None:
+        self.prob = prob
+        self.mask = None
+
+    def forward(self, x):
+        self.mask = (np.random.rand(x.shape) > self.prob).float()
+        return np.multiply(self.mask, x) / (1.0 - self.prob)
+
+    def backward(self, incoming_grad):
+        return np.multiply(incoming_grad, self.mask)
+
+
 class FeedForwardNetwork(NNComp):
     """
     This is one design option you might consider. Though it's
@@ -62,7 +75,7 @@ class FeedForwardNetwork(NNComp):
     other NNComp objects.
     """
 
-    def __init__(self, num_hiddens: List[int], weight_decay: float, max_seq_len: int, num_features: int, num_labels: int):
+    def __init__(self, num_hiddens: List[int], weight_decay: float, max_seq_len: int, num_features: int, num_labels: int, dropout: float = 0):
         self.num_hiddens = num_hiddens
         self.weight_decay = weight_decay
         self.max_seq_len = max_seq_len
@@ -70,6 +83,8 @@ class FeedForwardNetwork(NNComp):
         self.num_labels = num_labels
         self.activation_func = sigmoid
         self.d_activation_func = d_sigmoid
+        self.dropout = dropout
+        self.training = True
 
         # Weight matrices
 
@@ -96,6 +111,12 @@ class FeedForwardNetwork(NNComp):
             index = i + 1
             self.params[f"z{index}"] = None
             self.params[f"a{index}"] = None
+
+    def train(self):
+        self.training = True
+
+    def eval(self):
+        self.training = False
 
     def forward(self, x: np.array):
         self.params['x'] = x

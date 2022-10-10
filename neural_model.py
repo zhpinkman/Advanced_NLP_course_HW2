@@ -30,12 +30,13 @@ def loss_func(true_labels: np.array, predictions_probs: np.array, params, epsilo
 
 
 class NeuralModel(Model):
-    def __init__(self, num_hiddens: List[int], weight_decay: float, max_seq_len: int, embedding_file: str, label_set: set, data_file_name: str):
+    def __init__(self, num_hiddens: List[int], weight_decay: float, max_seq_len: int, embedding_file: str, label_set: set, data_file_name: str, dropout: float = 0):
         self.num_hiddens = num_hiddens
         self.weight_decay = weight_decay
         self.embedding = load_vectors(fname=embedding_file)
         self.max_seq_len = max_seq_len
         self.data_file_name = data_file_name
+        self.dropout = dropout
         self.num_features = list(self.embedding.values())[0].shape[0]
         self.label_set = label_set
         self.ohe = OneHotEncoder()
@@ -51,7 +52,8 @@ class NeuralModel(Model):
             weight_decay=weight_decay,
             max_seq_len=max_seq_len,
             num_features=self.num_features,
-            num_labels=len(self.label_set)
+            num_labels=len(self.label_set),
+            dropout=self.dropout
         )
 
     def preprocess(self, text: str) -> str:
@@ -95,6 +97,7 @@ class NeuralModel(Model):
         return inputs
 
     def evaluate(self, dataset: Dataset, batch_size: int):
+        self.network.eval()
         all_predictions = []
         true_labels = []
         all_losses = []
@@ -138,6 +141,8 @@ class NeuralModel(Model):
         dev_dataset: Dataset = None,
         test_dataset: Dataset = None
     ):
+
+        self.network.train()
 
         wandb.init(
             project=f"Advanced NLP A2 - {wandb_comment}",

@@ -17,6 +17,8 @@ if __name__ == '__main__':
     parser.add_argument('-e', type=int, help='number of epochs to train for')
     parser.add_argument('-E', type=str, help='word embedding file')
     parser.add_argument('-i', type=str, help='training file')
+    parser.add_argument('--dropout', type=float,
+                        help="the rate with which the dropout should be applied", default=0)
     parser.add_argument(
         '-w', type=float, help="weight decay for l2 regularization", default=0)
     parser.add_argument(
@@ -47,7 +49,8 @@ if __name__ == '__main__':
         max_seq_len=args.f,
         embedding_file=args.E,
         label_set=train_dataset.label_set,
-        data_file_name = args.i
+        data_file_name=args.i,
+        dropout=args.dropout
     )
 
     model.train(
