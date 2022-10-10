@@ -10,8 +10,12 @@ import torch
 import torch.nn as nn
 import io
 import re
+import random
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import f1_score, accuracy_score
+torch.manual_seed(77)
+np.random.seed(77)
+random.seed(77)
 
 
 def load_vectors(fname):
@@ -24,9 +28,19 @@ def load_vectors(fname):
 
 
 class TorchModel(Model):
-    def __init__(self, num_hidden: int, num_hidden_second: int, max_seq_len: int, embedding_file: str, label_set: set):
-        self.num_hidden = num_hidden
-        self.num_hidden_second = num_hidden_second
+    def __init__(self,
+                 num_hiddens: List[int],
+                 weight_decay: float,
+                 max_seq_len: int,
+                 embedding_file: str,
+                 label_set: set,
+                 data_file_name: str,
+                 dropout: float
+                 ):
+        self.num_hiddens = num_hiddens
+        self.weight_decay = weight_decay
+        self.data_file_name = data_file_name
+        self.dropout = dropout
         self.embedding = load_vectors(fname=embedding_file)
         self.max_seq_len = max_seq_len
         self.num_features = list(self.embedding.values())[0].shape[0]
@@ -39,13 +53,34 @@ class TorchModel(Model):
         self.id2label = {v: k for k, v in self.label2id.items()}
         self.ohe.fit(np.array(list(self.id2label.keys())).reshape(-1, 1))
 
-        self.model = nn.Sequential(
-            nn.Linear(self.num_features*self.max_seq_len, self.num_hidden),
-            nn.ReLU(),
-            nn.Linear(self.num_hidden, self.num_hidden_second),
-            nn.ReLU(),
-            nn.Linear(self.num_hidden_second, len(self.label_set))
+        layers = []
+        layers.append(
+            nn.Linear(
+                self.num_features*self.max_seq_len,
+                self.num_hiddens[0]
+            )
         )
+        layers.append(nn.ReLU())
+        layers.append(nn.Dropout1d(0.5))
+
+        for i in range(1, len(self.num_hiddens)):
+            layers.append(
+                nn.Linear(
+                    self.num_hiddens[i - 1],
+                    self.num_hiddens[i]
+                )
+            )
+            layers.append(nn.ReLU())
+            layers.append(nn.Dropout1d(0.5))
+
+        layers.append(
+            nn.Linear(
+                self.num_hiddens[-1],
+                len(self.label_set)
+            )
+        )
+
+        self.model = nn.Sequential(*layers)
 
     def preprocess(self, text: str) -> str:
         text = text.lower()
@@ -61,15 +96,23 @@ class TorchModel(Model):
         inputs = np.zeros(
             shape=[len(texts), self.max_seq_len * self.num_features])
         for i, text in enumerate(texts):
+            unk_counter = 0
             text_embedding = list()
-            words = self.preprocess(text).split()
+            if 'odia' not in self.data_file_name:
+                words = self.preprocess(text).split()
+            else:
+                words = text.split()
+
             for word in words[:min(len(words), self.max_seq_len)]:
                 if word.strip() in self.embedding:
                     text_embedding.extend(
                         self.embedding[word.strip()].tolist())
                 else:
+                    unk_counter += 1
                     text_embedding.extend(self.embedding['UNK'].tolist())
 
+            # print(f"Number of unknown words: {unk_counter / len(words)}")
+            # embed()
             padding_length = self.max_seq_len * \
                 self.num_features - len(text_embedding)
             text_embedding = np.array(text_embedding)
@@ -109,6 +152,7 @@ class TorchModel(Model):
         acc = accuracy_score(y_true=true_labels, y_pred=all_predictions)
 
         return {
+            "predictions": all_predictions,
             "loss": np.mean(all_losses),
             "f1": f1,
             "acc": acc
@@ -129,16 +173,18 @@ class TorchModel(Model):
             project=f"Advanced NLP A2 - {wandb_comment}",
             config={
                 "max_seq_len": self.max_seq_len,
-                "num_hidden": self.num_hidden,
+                "num_hiddens": self.num_hiddens,
                 "learning_rate": learning_rate,
                 "num_epochs": num_epochs,
                 "batch_size": batch_size
             }
         )
 
+        self.batch_size = batch_size
         self.model.train()
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
+        # optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
+        optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         data_loader = DataLoader(dataset=dataset, batch_size=batch_size)
         for epoch in tqdm(range(num_epochs), leave=False):
@@ -188,9 +234,24 @@ class TorchModel(Model):
             print('Evaluating Test Dataset')
             print(
                 "Test F1: " +
-                f"{test_metrics['f1']:.4e} | Test Acc: " +
-                f"{test_metrics['acc']:.4e} "
+                f"{test_metrics['f1']:.4} | Test Acc: " +
+                f"{test_metrics['acc']:.4} "
             )
 
-    def classify(self, input_file):
-        pass
+    def classify(self, dataset: Dataset):
+        self.model.eval()
+        all_predictions = []
+        data_loader = DataLoader(dataset=dataset, batch_size=self.batch_size)
+        with torch.no_grad():
+            for batch in tqdm(data_loader.get_batches(), leave=False):
+                texts = batch[0]
+                inputs = self.tokenize(texts=texts)
+
+                outputs = self.model(torch.from_numpy(inputs).float())
+
+                predictions = np.argmax(outputs.numpy(), axis=-1)
+                predictions = [self.id2label[prediction]
+                               for prediction in predictions]
+                all_predictions.extend(predictions)
+
+        return all_predictions

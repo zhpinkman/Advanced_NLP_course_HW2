@@ -16,7 +16,10 @@ class Dataset:
             self.labels = None
 
     def __getitem__(self, index):
-        return self.texts[index], self.labels[index]
+        if self.labels:
+            return self.texts[index], self.labels[index]
+        else:
+            return self.texts[index], None
 
     @property
     def label_set(self):

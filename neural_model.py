@@ -126,6 +126,7 @@ class NeuralModel(Model):
         acc = accuracy_score(y_true=true_labels, y_pred=all_predictions)
 
         return {
+            "predictions": all_predictions,
             "loss": np.mean(all_losses),
             "f1": f1,
             "acc": acc
@@ -141,7 +142,7 @@ class NeuralModel(Model):
         dev_dataset: Dataset = None,
         test_dataset: Dataset = None
     ):
-
+        self.batch_size = batch_size
         self.network.train()
 
         wandb.init(
@@ -173,7 +174,7 @@ class NeuralModel(Model):
                 )
                 epoch_loss.append(loss)
 
-                derivates = self.network.backward(
+                self.network.backward(
                     incoming_grad=outputs - labels_ohe
                 )
 
@@ -212,5 +213,21 @@ class NeuralModel(Model):
                 f"{test_metrics['acc']:.4} "
             )
 
-    def classify(self, input_file):
-        pass
+    def classify(self, dataset: Dataset):
+        self.network.eval()
+        all_predictions = []
+
+        data_loader = DataLoader(dataset=dataset, batch_size=self.batch_size)
+        for batch in tqdm(data_loader.get_batches(), leave=False):
+            texts = batch[0]
+
+            inputs = self.tokenize(texts=texts)
+
+            outputs = self.network.forward(inputs)
+
+            predictions = np.argmax(outputs, axis=-1)
+            predictions = [self.id2label[prediction]
+                           for prediction in predictions]
+            all_predictions.extend(predictions)
+
+        return all_predictions

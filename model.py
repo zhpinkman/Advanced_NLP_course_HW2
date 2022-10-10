@@ -10,8 +10,9 @@ class Model(object, metaclass=ABCMeta):
         with open(model_file, "wb") as file:
             pickle.dump(self, file)
 
-    def load_model(self):
-        with open(self.model_file, "rb") as file:
+    @staticmethod
+    def load_model(model_file):
+        with open(model_file, "rb") as file:
             model = pickle.load(file)
         return model
 

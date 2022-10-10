@@ -1,0 +1,4 @@
+Results comparing files datasets/custom_dataset/questions.train.test_labels.txt and tmp/questions.predictions 
+
+accuracy: 0.7581521739130435 
+f1_score: 0.7558350257135721 

@@ -1,0 +1,309 @@
+/cluster/raid/home/zhivar.sourati/Advanced_NLP_course_HW2
+
+
+Epoch:   0 | Loss: 0.6127 | Valid loss: 0.6251 | F1 : 0.6665 | Valid F1: 0.6457
+
+
+Epoch:   1 | Loss: 0.5547 | Valid loss: 0.5883 | F1 : 0.7295 | Valid F1: 0.6905
+
+
+Epoch:   2 | Loss: 0.5266 | Valid loss: 0.5789 | F1 : 0.7468 | Valid F1: 0.6965
+
+
+Epoch:   3 | Loss: 0.5105 | Valid loss: 0.5807 | F1 : 0.7544 | Valid F1: 0.699
+
+
+Epoch:   4 | Loss: 0.4945 | Valid loss: 0.582 | F1 : 0.7645 | Valid F1: 0.6991
+
+
+Epoch:   5 | Loss: 0.4769 | Valid loss: 0.5818 | F1 : 0.7752 | Valid F1: 0.7008
+
+
+Epoch:   6 | Loss: 0.4589 | Valid loss: 0.5818 | F1 : 0.7859 | Valid F1: 0.7041
+
+
+Epoch:   7 | Loss: 0.441 | Valid loss: 0.5827 | F1 : 0.7968 | Valid F1: 0.7052
+
+
+Epoch:   8 | Loss: 0.4259 | Valid loss: 0.5882 | F1 : 0.8049 | Valid F1: 0.7074
+
+
+Epoch:   9 | Loss: 0.4115 | Valid loss: 0.596 | F1 : 0.811 | Valid F1: 0.7068
+Evaluating Test Dataset
+Test F1: 0.7053 | Test Acc: 0.7059 
+
+
+Epoch:   0 | Loss: 1.597 | Valid loss: 1.534 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   1 | Loss: 1.533 | Valid loss: 1.484 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   2 | Loss: 1.486 | Valid loss: 1.454 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   3 | Loss: 1.427 | Valid loss: 1.427 | F1 : 0.125 | Valid F1: 0.1197
+
+
+Epoch:   4 | Loss: 1.34 | Valid loss: 1.406 | F1 : 0.181 | Valid F1: 0.1672
+
+
+Epoch:   5 | Loss: 1.301 | Valid loss: 1.477 | F1 : 0.1963 | Valid F1: 0.1957
+
+
+Epoch:   6 | Loss: 1.126 | Valid loss: 1.397 | F1 : 0.2657 | Valid F1: 0.2504
+
+
+Epoch:   7 | Loss: 1.039 | Valid loss: 1.454 | F1 : 0.3049 | Valid F1: 0.2692
+
+
+Epoch:   8 | Loss: 0.9143 | Valid loss: 1.398 | F1 : 0.4126 | Valid F1: 0.2826
+
+
+Epoch:   9 | Loss: 0.6562 | Valid loss: 1.339 | F1 : 0.6324 | Valid F1: 0.3926
+
+
+Epoch:  10 | Loss: 0.6753 | Valid loss: 1.699 | F1 : 0.6568 | Valid F1: 0.3679
+
+
+Epoch:  11 | Loss: 0.5786 | Valid loss: 1.554 | F1 : 0.6936 | Valid F1: 0.3823
+
+
+Epoch:  12 | Loss: 0.3803 | Valid loss: 1.433 | F1 : 0.8302 | Valid F1: 0.446
+
+
+Epoch:  13 | Loss: 0.4542 | Valid loss: 1.808 | F1 : 0.7683 | Valid F1: 0.4238
+
+
+Epoch:  14 | Loss: 0.3133 | Valid loss: 1.783 | F1 : 0.8576 | Valid F1: 0.4534
+
+
+Epoch:  15 | Loss: 0.275 | Valid loss: 1.863 | F1 : 0.8758 | Valid F1: 0.4461
+
+
+Epoch:  16 | Loss: 0.2429 | Valid loss: 1.906 | F1 : 0.8898 | Valid F1: 0.4461
+
+
+Epoch:  17 | Loss: 0.1598 | Valid loss: 1.846 | F1 : 0.9382 | Valid F1: 0.4648
+
+
+Epoch:  18 | Loss: 0.09514 | Valid loss: 1.771 | F1 : 0.9715 | Valid F1: 0.484
+
+
+Epoch:  19 | Loss: 0.05809 | Valid loss: 1.715 | F1 : 0.9897 | Valid F1: 0.4899
+
+
+Epoch:  20 | Loss: 0.03725 | Valid loss: 1.679 | F1 : 0.9953 | Valid F1: 0.481
+
+
+Epoch:  21 | Loss: 0.02632 | Valid loss: 1.664 | F1 : 0.996 | Valid F1: 0.4831
+
+
+Epoch:  22 | Loss: 0.02008 | Valid loss: 1.662 | F1 : 0.9984 | Valid F1: 0.4622
+
+
+Epoch:  23 | Loss: 0.01615 | Valid loss: 1.668 | F1 : 0.9992 | Valid F1: 0.4796
+
+
+Epoch:  24 | Loss: 0.01347 | Valid loss: 1.677 | F1 : 0.9992 | Valid F1: 0.4797
+
+
+Epoch:  25 | Loss: 0.01154 | Valid loss: 1.687 | F1 : 1.0 | Valid F1: 0.4887
+
+
+Epoch:  26 | Loss: 0.01006 | Valid loss: 1.698 | F1 : 1.0 | Valid F1: 0.4913
+
+
+Epoch:  27 | Loss: 0.008902 | Valid loss: 1.71 | F1 : 1.0 | Valid F1: 0.498
+
+
+Epoch:  28 | Loss: 0.007961 | Valid loss: 1.72 | F1 : 1.0 | Valid F1: 0.4983
+
+
+Epoch:  29 | Loss: 0.007185 | Valid loss: 1.731 | F1 : 1.0 | Valid F1: 0.4983
+
+
+Epoch:  30 | Loss: 0.006533 | Valid loss: 1.742 | F1 : 1.0 | Valid F1: 0.4983
+
+
+Epoch:  31 | Loss: 0.00598 | Valid loss: 1.752 | F1 : 1.0 | Valid F1: 0.4951
+
+
+Epoch:  32 | Loss: 0.005506 | Valid loss: 1.762 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  33 | Loss: 0.005095 | Valid loss: 1.772 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  34 | Loss: 0.004737 | Valid loss: 1.781 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  35 | Loss: 0.004422 | Valid loss: 1.79 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  36 | Loss: 0.004144 | Valid loss: 1.799 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  37 | Loss: 0.003896 | Valid loss: 1.808 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  38 | Loss: 0.003675 | Valid loss: 1.816 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  39 | Loss: 0.003476 | Valid loss: 1.825 | F1 : 1.0 | Valid F1: 0.5015
+
+
+Epoch:  40 | Loss: 0.003297 | Valid loss: 1.833 | F1 : 1.0 | Valid F1: 0.5072
+
+
+Epoch:  41 | Loss: 0.003134 | Valid loss: 1.841 | F1 : 1.0 | Valid F1: 0.5072
+
+
+Epoch:  42 | Loss: 0.002986 | Valid loss: 1.849 | F1 : 1.0 | Valid F1: 0.5072
+
+
+Epoch:  43 | Loss: 0.00285 | Valid loss: 1.857 | F1 : 1.0 | Valid F1: 0.5077
+
+
+Epoch:  44 | Loss: 0.002726 | Valid loss: 1.864 | F1 : 1.0 | Valid F1: 0.5077
+
+
+Epoch:  45 | Loss: 0.002611 | Valid loss: 1.871 | F1 : 1.0 | Valid F1: 0.5077
+
+
+Epoch:  46 | Loss: 0.002506 | Valid loss: 1.879 | F1 : 1.0 | Valid F1: 0.5077
+
+
+Epoch:  47 | Loss: 0.002408 | Valid loss: 1.886 | F1 : 1.0 | Valid F1: 0.5077
+
+
+Epoch:  48 | Loss: 0.002317 | Valid loss: 1.893 | F1 : 1.0 | Valid F1: 0.5202
+
+
+Epoch:  49 | Loss: 0.002233 | Valid loss: 1.899 | F1 : 1.0 | Valid F1: 0.5202
+
+
+Epoch:  50 | Loss: 0.002154 | Valid loss: 1.906 | F1 : 1.0 | Valid F1: 0.5202
+
+
+Epoch:  51 | Loss: 0.002081 | Valid loss: 1.913 | F1 : 1.0 | Valid F1: 0.5202
+
+
+Epoch:  52 | Loss: 0.002012 | Valid loss: 1.919 | F1 : 1.0 | Valid F1: 0.5202
+
+
+Epoch:  53 | Loss: 0.001947 | Valid loss: 1.925 | F1 : 1.0 | Valid F1: 0.5255
+
+
+Epoch:  54 | Loss: 0.001886 | Valid loss: 1.931 | F1 : 1.0 | Valid F1: 0.5255
+
+
+Epoch:  55 | Loss: 0.001829 | Valid loss: 1.937 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  56 | Loss: 0.001775 | Valid loss: 1.943 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  57 | Loss: 0.001724 | Valid loss: 1.949 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  58 | Loss: 0.001676 | Valid loss: 1.955 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  59 | Loss: 0.00163 | Valid loss: 1.96 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  60 | Loss: 0.001587 | Valid loss: 1.966 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  61 | Loss: 0.001546 | Valid loss: 1.971 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  62 | Loss: 0.001507 | Valid loss: 1.976 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  63 | Loss: 0.001469 | Valid loss: 1.982 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  64 | Loss: 0.001434 | Valid loss: 1.987 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  65 | Loss: 0.0014 | Valid loss: 1.992 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  66 | Loss: 0.001367 | Valid loss: 1.997 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  67 | Loss: 0.001336 | Valid loss: 2.002 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  68 | Loss: 0.001307 | Valid loss: 2.006 | F1 : 1.0 | Valid F1: 0.526
+
+
+Epoch:  69 | Loss: 0.001278 | Valid loss: 2.011 | F1 : 1.0 | Valid F1: 0.526
+Evaluating Test Dataset
+Test F1: 0.5889 | Test Acc: 0.5887 
+
+
+Epoch:   0 | Loss: 1.567 | Valid loss: 1.586 | F1 : 0.2979 | Valid F1: 0.2984
+
+
+Epoch:   1 | Loss: 1.427 | Valid loss: 1.455 | F1 : 0.4429 | Valid F1: 0.4309
+
+
+Epoch:   2 | Loss: 1.254 | Valid loss: 1.292 | F1 : 0.5637 | Valid F1: 0.5424
+
+
+Epoch:   3 | Loss: 1.1 | Valid loss: 1.161 | F1 : 0.6312 | Valid F1: 0.5943
+
+
+Epoch:   4 | Loss: 0.9645 | Valid loss: 1.053 | F1 : 0.6789 | Valid F1: 0.6264
+
+
+Epoch:   5 | Loss: 0.845 | Valid loss: 0.963 | F1 : 0.7173 | Valid F1: 0.6386
+
+
+Epoch:   6 | Loss: 0.7448 | Valid loss: 0.8917 | F1 : 0.7559 | Valid F1: 0.6547
+
+
+Epoch:   7 | Loss: 0.663 | Valid loss: 0.837 | F1 : 0.7828 | Valid F1: 0.6723
+
+
+Epoch:   8 | Loss: 0.5972 | Valid loss: 0.7963 | F1 : 0.8044 | Valid F1: 0.6819
+
+
+Epoch:   9 | Loss: 0.5444 | Valid loss: 0.767 | F1 : 0.821 | Valid F1: 0.7082
+Evaluating Test Dataset
+Test F1: 0.7558 | Test Acc: 0.7582 
+
+
+Epoch:   0 | Loss: 0.9906 | Valid loss: 1.002 | F1 : 0.4726 | Valid F1: 0.4483
+
+
+Epoch:   1 | Loss: 0.8067 | Valid loss: 0.8188 | F1 : 0.7115 | Valid F1: 0.7089
+
+
+Epoch:   2 | Loss: 0.63 | Valid loss: 0.6476 | F1 : 0.7671 | Valid F1: 0.765
+
+
+Epoch:   3 | Loss: 0.5339 | Valid loss: 0.5648 | F1 : 0.7995 | Valid F1: 0.7845
+
+
+Epoch:   4 | Loss: 0.4852 | Valid loss: 0.5299 | F1 : 0.8154 | Valid F1: 0.7855
+
+
+Epoch:   5 | Loss: 0.4574 | Valid loss: 0.5151 | F1 : 0.8257 | Valid F1: 0.7866
+
+
+Epoch:   6 | Loss: 0.438 | Valid loss: 0.5084 | F1 : 0.8338 | Valid F1: 0.7923
+
+
+Epoch:   7 | Loss: 0.4227 | Valid loss: 0.5055 | F1 : 0.839 | Valid F1: 0.7924
+
+
+Epoch:   8 | Loss: 0.41 | Valid loss: 0.5048 | F1 : 0.843 | Valid F1: 0.7938
+
+
+Epoch:   9 | Loss: 0.3994 | Valid loss: 0.5057 | F1 : 0.8476 | Valid F1: 0.7913
+Evaluating Test Dataset
+Test F1: 0.8068 | Test Acc: 0.807 
