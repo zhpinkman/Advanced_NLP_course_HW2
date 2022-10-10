@@ -33,10 +33,10 @@ python3 train-torch.py \
 
 python3 train-torch.py \
     -u 64,32 \
-    -l 1e-5 \
-    -f 400 \
+    -l 1e-2 \
+    -f 200 \
     -b 16 \
-    -e 50 \
+    -e 60 \
     -E glove.6B.50d.txt \
     -i datasets/custom_dataset/4dim.train.train.txt \
     -o torch.4dim.model \

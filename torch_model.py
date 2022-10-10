@@ -10,12 +10,10 @@ import torch
 import torch.nn as nn
 import io
 import re
-import random
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import f1_score, accuracy_score
-torch.manual_seed(77)
-np.random.seed(77)
-random.seed(77)
+from nltk.corpus import stopwords
+stopwords = stopwords.words('english')
 
 
 def load_vectors(fname):
@@ -54,25 +52,28 @@ class TorchModel(Model):
         self.ohe.fit(np.array(list(self.id2label.keys())).reshape(-1, 1))
 
         layers = []
+        torch.manual_seed(77)
         layers.append(
             nn.Linear(
                 self.num_features*self.max_seq_len,
                 self.num_hiddens[0]
             )
         )
-        layers.append(nn.ReLU())
-        layers.append(nn.Dropout1d(0.5))
+        layers.append(nn.Sigmoid())
+        # layers.append(nn.Dropout1d(0.5))
 
         for i in range(1, len(self.num_hiddens)):
+            torch.manual_seed(66 + i)
             layers.append(
                 nn.Linear(
                     self.num_hiddens[i - 1],
                     self.num_hiddens[i]
                 )
             )
-            layers.append(nn.ReLU())
-            layers.append(nn.Dropout1d(0.5))
+            layers.append(nn.Sigmoid())
+            # layers.append(nn.Dropout1d(0.5))
 
+        torch.manual_seed(55)
         layers.append(
             nn.Linear(
                 self.num_hiddens[-1],
@@ -90,6 +91,8 @@ class TorchModel(Model):
         text = re.sub("wasn't", "was not", text)
         text = re.sub("weren't", "were not", text)
         text = re.sub(r'[^\w\s]', '', text)
+        text = ' '.join([word for word in text.split()
+                        if word not in stopwords])
         return text
 
     def tokenize(self, texts: List[str]):
@@ -183,8 +186,8 @@ class TorchModel(Model):
         self.batch_size = batch_size
         self.model.train()
         criterion = nn.CrossEntropyLoss()
-        # optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
-        optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
+        optimizer = optim.SGD(self.model.parameters(), lr=learning_rate)
+        # optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         data_loader = DataLoader(dataset=dataset, batch_size=batch_size)
         for epoch in tqdm(range(num_epochs), leave=False):

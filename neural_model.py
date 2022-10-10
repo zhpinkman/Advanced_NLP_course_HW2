@@ -12,6 +12,9 @@ import io
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import f1_score, accuracy_score
 
+from nltk.corpus import stopwords
+stopwords = stopwords.words('english')
+
 
 def load_vectors(fname):
     fin = io.open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
@@ -64,6 +67,8 @@ class NeuralModel(Model):
         text = re.sub("wasn't", "was not", text)
         text = re.sub("weren't", "were not", text)
         text = re.sub(r'[^\w\s]', '', text)
+        text = ' '.join([word for word in text.split()
+                        if word not in stopwords])
         return text
 
     def tokenize(self, texts: List[str]):

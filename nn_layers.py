@@ -2,9 +2,6 @@ import numpy as np
 from IPython import embed
 from abc import ABC, abstractmethod
 from typing import List
-import random
-random.seed(77)
-np.random.seed(77)
 
 
 class NNComp(ABC):
@@ -58,7 +55,7 @@ class DropoutLayer(NNComp):
         self.mask = None
 
     def forward(self, x):
-        self.mask = (np.random.rand(x.shape) > self.prob).float()
+        self.mask = (np.random.rand(*x.shape) > self.prob).astype(int)
         return np.multiply(self.mask, x) / (1.0 - self.prob)
 
     def backward(self, incoming_grad):
@@ -89,16 +86,21 @@ class FeedForwardNetwork(NNComp):
         # Weight matrices
 
         self.params = dict()
+        np.random.seed(77)
         self.params['W1'] = np.random.randn(
             num_features * max_seq_len, self.num_hiddens[0]) * np.sqrt(2/(num_features * max_seq_len))
         self.params['b1'] = np.zeros(shape=[1, self.num_hiddens[0]])
+        self.params[f'dropout1'] = DropoutLayer(self.dropout)
 
         for i in range(1, len(self.num_hiddens)):
             index = i + 1
+            np.random.seed(66 + index)
             self.params[f"W{index}"] = np.random.randn(
                 self.num_hiddens[i - 1], self.num_hiddens[i]) * np.sqrt(2/(self.num_hiddens[i - 1]))
             self.params[f"b{index}"] = np.zeros(shape=[1, self.num_hiddens[i]])
+            self.params[f'dropout{index}'] = DropoutLayer(self.dropout)
 
+        np.random.seed(55)
         self.params[f"W{len(self.num_hiddens) + 1}"] = np.random.randn(
             self.num_hiddens[-1], num_labels) * np.sqrt(2/self.num_hiddens[-1])
         self.params[f"b{len(self.num_hiddens) + 1}"] = np.zeros(
@@ -122,7 +124,12 @@ class FeedForwardNetwork(NNComp):
         self.params['x'] = x
 
         self.params["z1"] = x @ self.params["W1"] + self.params["b1"]
-        self.params["a1"] = self.activation_func(self.params["z1"])
+        self.params["a1"] = self.activation_func(
+            self.params["z1"]
+        )
+        # if self.training:
+        #     self.params["a1"] = self.params['dropout1'].forward(
+        #         self.params["a1"])
 
         for i in range(1, len(self.num_hiddens)):
             index = i + 1
@@ -130,6 +137,10 @@ class FeedForwardNetwork(NNComp):
                 self.params[f"b{index}"]
             self.params[f"a{index}"] = self.activation_func(
                 self.params[f"z{index}"])
+            # if self.training:
+            #     self.params[f"a{index}"] = self.params[f'dropout{index}'].forward(
+            #         self.params[f"a{index}"]
+            #     )
 
         self.params[f"z{len(self.num_hiddens) + 1}"] = self.params[f"a{len(self.num_hiddens)}"] @ self.params[f"W{len(self.num_hiddens) + 1}"] + \
             self.params[f"b{len(self.num_hiddens) + 1}"]
@@ -145,15 +156,25 @@ class FeedForwardNetwork(NNComp):
         for i in range(len(self.num_hiddens), 0, -1):
             index = i + 1
             self.params[f"dW{index}"] = (
-                self.params[f"a{index - 1}"].T @ self.params[f"dz{index}"]) / num_examples
+                self.params[f"a{index - 1}"].T @ self.params[f"dz{index}"]) / num_examples + self.params[f"W{index}"] / num_examples * self.weight_decay
             self.params[f"db{index}"] = np.mean(
                 self.params[f"dz{index}"], axis=0, keepdims=True)
             self.params[f"da{index - 1}"] = self.params[f"dz{index}"] @ self.params[f"W{index}"].T
+            # if self.training:
+            # self.params[f"dz{index - 1}"] = self.d_activation_func(
+            #     self.params[f"z{index - 1}"],
+            #     self.params[f"dropout{index - 1}"].backward(
+            #         self.params[f"da{index - 1}"]
+            #     )
+            # )
+            # else:
             self.params[f"dz{index - 1}"] = self.d_activation_func(
-                self.params[f"z{index - 1}"], self.params[f"da{index - 1}"])
+                self.params[f"z{index - 1}"],
+                self.params[f"da{index - 1}"]
+            )
 
         self.params["dW1"] = (self.params["x"].T @
-                              self.params["dz1"]) / num_examples
+                              self.params["dz1"]) / num_examples + self.params["W1"] / num_examples * self.weight_decay
         self.params["db1"] = np.mean(self.params["dz1"], axis=0, keepdims=True)
 
     def update_weights(self, learning_rate):
