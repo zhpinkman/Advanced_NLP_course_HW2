@@ -9,3 +9,4 @@ source.ipynb
 *.model
 wandb/**
 __MACOSX/**
+.vscode/**
