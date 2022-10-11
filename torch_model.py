@@ -101,7 +101,7 @@ class TorchModel(Model):
         for i, text in enumerate(texts):
             unk_counter = 0
             text_embedding = list()
-            if 'odia' not in self.data_file_name:
+            if 'odiya' not in self.data_file_name:
                 words = self.preprocess(text).split()
             else:
                 words = text.split()

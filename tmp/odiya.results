@@ -1,4 +1,4 @@
 Results comparing files datasets/custom_dataset/odiya.train.test_labels.txt and tmp/odiya.predictions 
 
-accuracy: 0.8128654970760234 
-f1_score: 0.8127466311211095 
+accuracy: 0.814327485380117 
+f1_score: 0.814225406683171 

@@ -65,7 +65,7 @@ python3 train-torch.py \
     --wandb_comment "torch_questions"
 
 
-echo "Training torch Neural Network on odia dataset"
+echo "Training torch Neural Network on odiya dataset"
 python3 train-torch.py \
     -u 128,64 \
     -l 5e-2 \
@@ -73,13 +73,13 @@ python3 train-torch.py \
     -b 32 \
     -e 10 \
     -E fasttext.wiki.300d.vec \
-    -i datasets/custom_dataset/odia.train.train.txt \
-    -o torch.odia.model \
-    --dev_text datasets/custom_dataset/odia.train.dev.txt \
-    --dev_labels datasets/custom_dataset/odia.train.dev_labels.txt \
-    --test_text datasets/custom_dataset/odia.train.test.txt \
-    --test_labels datasets/custom_dataset/odia.train.test_labels.txt \
-    --wandb_comment "torch_odia"
+    -i datasets/custom_dataset/odiya.train.train.txt \
+    -o torch.odiya.model \
+    --dev_text datasets/custom_dataset/odiya.train.dev.txt \
+    --dev_labels datasets/custom_dataset/odiya.train.dev_labels.txt \
+    --test_text datasets/custom_dataset/odiya.train.test.txt \
+    --test_labels datasets/custom_dataset/odiya.train.test_labels.txt \
+    --wandb_comment "torch_odiya"
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -122,15 +122,15 @@ python3 evaluate.py \
     --predictions tmp/torch.questions.predictions \
     --output_file tmp/torch.questions.results
 
-echo "Evaluation of torch Neural Network on odia dataset"
+echo "Evaluation of torch Neural Network on odiya dataset"
 python3 classify-torch.py \
-    -m torch.odia.model \
-    -i datasets/custom_dataset/odia.train.test.txt \
-    -o tmp/torch.odia.predictions
+    -m torch.odiya.model \
+    -i datasets/custom_dataset/odiya.train.test.txt \
+    -o tmp/torch.odiya.predictions
 
 python3 evaluate.py \
-    --labels datasets/custom_dataset/odia.train.test_labels.txt \
-    --predictions tmp/torch.odia.predictions \
-    --output_file tmp/torch.odia.results
+    --labels datasets/custom_dataset/odiya.train.test_labels.txt \
+    --predictions tmp/torch.odiya.predictions \
+    --output_file tmp/torch.odiya.results
 conda deactivate
 

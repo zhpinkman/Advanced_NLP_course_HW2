@@ -10,3 +10,4 @@ source.ipynb
 wandb/**
 __MACOSX/**
 .vscode/**
+**/*.zip

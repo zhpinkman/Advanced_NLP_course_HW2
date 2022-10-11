@@ -68,7 +68,7 @@ python3 train.py \
     --wandb_comment questions
 
 
-echo "Training simple Neural Network on odia dataset"
+echo "Training simple Neural Network on odiya dataset"
 python3 train.py \
     -u 128,64 \
     -l 5e-2 \
@@ -76,13 +76,13 @@ python3 train.py \
     -b 32 \
     -e 10 \
     -E fasttext.wiki.300d.vec \
-    -i datasets/custom_dataset/odia.train.train.txt \
-    -o odia.model \
-    --dev_text datasets/custom_dataset/odia.train.dev.txt \
-    --dev_labels datasets/custom_dataset/odia.train.dev_labels.txt \
-    --test_text datasets/custom_dataset/odia.train.test.txt \
-    --test_labels datasets/custom_dataset/odia.train.test_labels.txt \
-    --wandb_comment odia
+    -i datasets/custom_dataset/odiya.train.train.txt \
+    -o odiya.model \
+    --dev_text datasets/custom_dataset/odiya.train.dev.txt \
+    --dev_labels datasets/custom_dataset/odiya.train.dev_labels.txt \
+    --test_text datasets/custom_dataset/odiya.train.test.txt \
+    --test_labels datasets/custom_dataset/odiya.train.test_labels.txt \
+    --wandb_comment odiya
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -124,16 +124,16 @@ python3 evaluate.py \
     --predictions tmp/questions.predictions \
     --output_file tmp/questions.results
 
-echo "Evaluation of simple Neural Network on odia dataset"
+echo "Evaluation of simple Neural Network on odiya dataset"
 python3 classify.py \
-    -m odia.model \
-    -i datasets/custom_dataset/odia.train.test.txt \
-    -o tmp/odia.predictions
+    -m odiya.model \
+    -i datasets/custom_dataset/odiya.train.test.txt \
+    -o tmp/odiya.predictions
 
 python3 evaluate.py \
-    --labels datasets/custom_dataset/odia.train.test_labels.txt \
-    --predictions tmp/odia.predictions \
-    --output_file tmp/odia.results
+    --labels datasets/custom_dataset/odiya.train.test_labels.txt \
+    --predictions tmp/odiya.predictions \
+    --output_file tmp/odiya.results
 
 conda deactivate
 
