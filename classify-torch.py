@@ -16,6 +16,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     model = NeuralModel.load_model(args.m)
+    model.load_embedding_file()
 
     dataset = Dataset(file=args.i, with_labels=False)
 

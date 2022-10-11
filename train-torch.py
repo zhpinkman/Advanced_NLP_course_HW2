@@ -62,5 +62,6 @@ if __name__ == '__main__':
         test_dataset=test_dataset,
         wandb_comment=args.wandb_comment
     )
+    model.prepare_model_to_be_saved()
 
     model.save_model(args.o)
