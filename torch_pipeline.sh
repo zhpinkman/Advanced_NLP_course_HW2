@@ -16,11 +16,11 @@ python3 train-torch.py \
 
 echo "Training torch Neural Network on 4dim dataset"
 python3 train-torch.py \
-    -u 256,128,64 \
-    -l 1e-1 \
-    -f 300 \
+    -u 64,32 \
+    -l 2e-2 \
+    -f 200 \
     -b 16 \
-    -e 70 \
+    -e 100 \
     -E glove.6B.50d.txt \
     -i datasets/custom_dataset/4dim.train.train.txt \
     -o torch.4dim.model \

@@ -1,0 +1,437 @@
+/cluster/raid/home/zhivar.sourati/Advanced_NLP_course_HW2
+Training torch Neural Network on Products dataset
+
+
+Epoch:   0 | Loss: 0.6713 | Valid loss: 0.6711 | F1 : 0.4389 | Valid F1: 0.4448
+
+
+Epoch:   1 | Loss: 0.6483 | Valid loss: 0.6515 | F1 : 0.5484 | Valid F1: 0.5314
+
+
+Epoch:   2 | Loss: 0.5762 | Valid loss: 0.5959 | F1 : 0.7167 | Valid F1: 0.6842
+
+
+Epoch:   3 | Loss: 0.547 | Valid loss: 0.5937 | F1 : 0.7293 | Valid F1: 0.6872
+
+
+Epoch:   4 | Loss: 0.5182 | Valid loss: 0.5851 | F1 : 0.7515 | Valid F1: 0.7
+
+
+Epoch:   5 | Loss: 0.4959 | Valid loss: 0.5809 | F1 : 0.7658 | Valid F1: 0.7036
+
+
+Epoch:   6 | Loss: 0.4797 | Valid loss: 0.5815 | F1 : 0.775 | Valid F1: 0.7068
+
+
+Epoch:   7 | Loss: 0.4672 | Valid loss: 0.585 | F1 : 0.7818 | Valid F1: 0.7036
+
+
+Epoch:   8 | Loss: 0.4568 | Valid loss: 0.5903 | F1 : 0.7873 | Valid F1: 0.7059
+
+
+Epoch:   9 | Loss: 0.4474 | Valid loss: 0.5966 | F1 : 0.7922 | Valid F1: 0.7036
+Evaluating Test Dataset
+Test F1: 0.708 | Test Acc: 0.7072 
+Training torch Neural Network on 4dim dataset
+
+
+Epoch:   0 | Loss: 1.389 | Valid loss: 1.387 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   1 | Loss: 1.387 | Valid loss: 1.386 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   2 | Loss: 1.385 | Valid loss: 1.384 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   3 | Loss: 1.383 | Valid loss: 1.382 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   4 | Loss: 1.381 | Valid loss: 1.38 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   5 | Loss: 1.378 | Valid loss: 1.378 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   6 | Loss: 1.375 | Valid loss: 1.375 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   7 | Loss: 1.372 | Valid loss: 1.372 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   8 | Loss: 1.368 | Valid loss: 1.369 | F1 : 0.09844 | Valid F1: 0.1191
+
+
+Epoch:   9 | Loss: 1.363 | Valid loss: 1.364 | F1 : 0.1098 | Valid F1: 0.1191
+
+
+Epoch:  10 | Loss: 1.357 | Valid loss: 1.359 | F1 : 0.2168 | Valid F1: 0.1999
+
+
+Epoch:  11 | Loss: 1.35 | Valid loss: 1.353 | F1 : 0.2367 | Valid F1: 0.2344
+
+
+Epoch:  12 | Loss: 1.343 | Valid loss: 1.345 | F1 : 0.2432 | Valid F1: 0.2514
+
+
+Epoch:  13 | Loss: 1.334 | Valid loss: 1.337 | F1 : 0.2425 | Valid F1: 0.2518
+
+
+Epoch:  14 | Loss: 1.324 | Valid loss: 1.328 | F1 : 0.2435 | Valid F1: 0.2572
+
+
+Epoch:  15 | Loss: 1.312 | Valid loss: 1.318 | F1 : 0.2433 | Valid F1: 0.2532
+
+
+Epoch:  16 | Loss: 1.3 | Valid loss: 1.308 | F1 : 0.2449 | Valid F1: 0.2532
+
+
+Epoch:  17 | Loss: 1.286 | Valid loss: 1.297 | F1 : 0.247 | Valid F1: 0.2578
+
+
+Epoch:  18 | Loss: 1.271 | Valid loss: 1.285 | F1 : 0.2508 | Valid F1: 0.2578
+
+
+Epoch:  19 | Loss: 1.252 | Valid loss: 1.273 | F1 : 0.2586 | Valid F1: 0.2578
+
+
+Epoch:  20 | Loss: 1.23 | Valid loss: 1.259 | F1 : 0.2646 | Valid F1: 0.2669
+
+
+Epoch:  21 | Loss: 1.204 | Valid loss: 1.243 | F1 : 0.2766 | Valid F1: 0.2665
+
+
+Epoch:  22 | Loss: 1.173 | Valid loss: 1.226 | F1 : 0.2954 | Valid F1: 0.2706
+
+
+Epoch:  23 | Loss: 1.139 | Valid loss: 1.206 | F1 : 0.3253 | Valid F1: 0.2843
+
+
+Epoch:  24 | Loss: 1.101 | Valid loss: 1.185 | F1 : 0.3742 | Valid F1: 0.3444
+
+
+Epoch:  25 | Loss: 1.061 | Valid loss: 1.163 | F1 : 0.4108 | Valid F1: 0.356
+
+
+Epoch:  26 | Loss: 1.021 | Valid loss: 1.14 | F1 : 0.4519 | Valid F1: 0.3752
+
+
+Epoch:  27 | Loss: 0.98 | Valid loss: 1.118 | F1 : 0.5085 | Valid F1: 0.3911
+
+
+Epoch:  28 | Loss: 0.94 | Valid loss: 1.097 | F1 : 0.5622 | Valid F1: 0.4436
+
+
+Epoch:  29 | Loss: 0.9007 | Valid loss: 1.078 | F1 : 0.6255 | Valid F1: 0.4801
+
+
+Epoch:  30 | Loss: 0.8619 | Valid loss: 1.06 | F1 : 0.6747 | Valid F1: 0.4903
+
+
+Epoch:  31 | Loss: 0.8234 | Valid loss: 1.044 | F1 : 0.7121 | Valid F1: 0.5043
+
+
+Epoch:  32 | Loss: 0.785 | Valid loss: 1.03 | F1 : 0.7401 | Valid F1: 0.5248
+
+
+Epoch:  33 | Loss: 0.7464 | Valid loss: 1.016 | F1 : 0.7669 | Valid F1: 0.5199
+
+
+Epoch:  34 | Loss: 0.7076 | Valid loss: 1.002 | F1 : 0.7998 | Valid F1: 0.5234
+
+
+Epoch:  35 | Loss: 0.6687 | Valid loss: 0.9904 | F1 : 0.8202 | Valid F1: 0.5326
+
+
+Epoch:  36 | Loss: 0.63 | Valid loss: 0.9796 | F1 : 0.8313 | Valid F1: 0.5257
+
+
+Epoch:  37 | Loss: 0.5918 | Valid loss: 0.9703 | F1 : 0.8488 | Valid F1: 0.5306
+
+
+Epoch:  38 | Loss: 0.5546 | Valid loss: 0.9627 | F1 : 0.8609 | Valid F1: 0.5236
+
+
+Epoch:  39 | Loss: 0.5187 | Valid loss: 0.957 | F1 : 0.8722 | Valid F1: 0.5469
+
+
+Epoch:  40 | Loss: 0.4843 | Valid loss: 0.953 | F1 : 0.8847 | Valid F1: 0.5664
+
+
+Epoch:  41 | Loss: 0.4513 | Valid loss: 0.9505 | F1 : 0.8927 | Valid F1: 0.5676
+
+
+Epoch:  42 | Loss: 0.4199 | Valid loss: 0.9493 | F1 : 0.9015 | Valid F1: 0.5794
+
+
+Epoch:  43 | Loss: 0.3901 | Valid loss: 0.9492 | F1 : 0.9112 | Valid F1: 0.5796
+
+
+Epoch:  44 | Loss: 0.3617 | Valid loss: 0.95 | F1 : 0.9263 | Valid F1: 0.579
+
+
+Epoch:  45 | Loss: 0.335 | Valid loss: 0.9516 | F1 : 0.9366 | Valid F1: 0.5736
+
+
+Epoch:  46 | Loss: 0.3098 | Valid loss: 0.9539 | F1 : 0.943 | Valid F1: 0.5684
+
+
+Epoch:  47 | Loss: 0.2863 | Valid loss: 0.957 | F1 : 0.9501 | Valid F1: 0.5683
+
+
+Epoch:  48 | Loss: 0.2644 | Valid loss: 0.9607 | F1 : 0.9549 | Valid F1: 0.5606
+
+
+Epoch:  49 | Loss: 0.2441 | Valid loss: 0.965 | F1 : 0.9596 | Valid F1: 0.5678
+
+
+Epoch:  50 | Loss: 0.2254 | Valid loss: 0.9699 | F1 : 0.9683 | Valid F1: 0.5601
+
+
+Epoch:  51 | Loss: 0.2081 | Valid loss: 0.9753 | F1 : 0.9739 | Valid F1: 0.5671
+
+
+Epoch:  52 | Loss: 0.1922 | Valid loss: 0.9811 | F1 : 0.9755 | Valid F1: 0.574
+
+
+Epoch:  53 | Loss: 0.1777 | Valid loss: 0.9874 | F1 : 0.9826 | Valid F1: 0.569
+
+
+Epoch:  54 | Loss: 0.1643 | Valid loss: 0.9941 | F1 : 0.985 | Valid F1: 0.5748
+
+
+Epoch:  55 | Loss: 0.1522 | Valid loss: 1.001 | F1 : 0.9881 | Valid F1: 0.5684
+
+
+Epoch:  56 | Loss: 0.141 | Valid loss: 1.009 | F1 : 0.9921 | Valid F1: 0.5684
+
+
+Epoch:  57 | Loss: 0.1309 | Valid loss: 1.016 | F1 : 0.9945 | Valid F1: 0.5701
+
+
+Epoch:  58 | Loss: 0.1216 | Valid loss: 1.024 | F1 : 0.9953 | Valid F1: 0.5701
+
+
+Epoch:  59 | Loss: 0.1131 | Valid loss: 1.033 | F1 : 0.996 | Valid F1: 0.5767
+
+
+Epoch:  60 | Loss: 0.1054 | Valid loss: 1.041 | F1 : 0.9968 | Valid F1: 0.5688
+
+
+Epoch:  61 | Loss: 0.09843 | Valid loss: 1.05 | F1 : 0.9984 | Valid F1: 0.5682
+
+
+Epoch:  62 | Loss: 0.09204 | Valid loss: 1.059 | F1 : 0.9992 | Valid F1: 0.5682
+
+
+Epoch:  63 | Loss: 0.08622 | Valid loss: 1.068 | F1 : 0.9992 | Valid F1: 0.5682
+
+
+Epoch:  64 | Loss: 0.08091 | Valid loss: 1.077 | F1 : 0.9992 | Valid F1: 0.5678
+
+
+Epoch:  65 | Loss: 0.07607 | Valid loss: 1.087 | F1 : 0.9992 | Valid F1: 0.5678
+
+
+Epoch:  66 | Loss: 0.07164 | Valid loss: 1.096 | F1 : 0.9992 | Valid F1: 0.5678
+
+
+Epoch:  67 | Loss: 0.0676 | Valid loss: 1.105 | F1 : 0.9992 | Valid F1: 0.581
+
+
+Epoch:  68 | Loss: 0.06389 | Valid loss: 1.114 | F1 : 0.9992 | Valid F1: 0.5821
+
+
+Epoch:  69 | Loss: 0.0605 | Valid loss: 1.124 | F1 : 0.9992 | Valid F1: 0.5878
+
+
+Epoch:  70 | Loss: 0.05738 | Valid loss: 1.133 | F1 : 0.9992 | Valid F1: 0.5878
+
+
+Epoch:  71 | Loss: 0.05451 | Valid loss: 1.142 | F1 : 0.9992 | Valid F1: 0.5878
+
+
+Epoch:  72 | Loss: 0.05186 | Valid loss: 1.15 | F1 : 1.0 | Valid F1: 0.5878
+
+
+Epoch:  73 | Loss: 0.04942 | Valid loss: 1.159 | F1 : 1.0 | Valid F1: 0.5878
+
+
+Epoch:  74 | Loss: 0.04716 | Valid loss: 1.168 | F1 : 1.0 | Valid F1: 0.5878
+
+
+Epoch:  75 | Loss: 0.04507 | Valid loss: 1.176 | F1 : 1.0 | Valid F1: 0.5878
+
+
+Epoch:  76 | Loss: 0.04313 | Valid loss: 1.185 | F1 : 1.0 | Valid F1: 0.5878
+
+
+Epoch:  77 | Loss: 0.04132 | Valid loss: 1.193 | F1 : 1.0 | Valid F1: 0.5878
+
+
+Epoch:  78 | Loss: 0.03964 | Valid loss: 1.201 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  79 | Loss: 0.03807 | Valid loss: 1.209 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  80 | Loss: 0.0366 | Valid loss: 1.216 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  81 | Loss: 0.03523 | Valid loss: 1.224 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  82 | Loss: 0.03394 | Valid loss: 1.231 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  83 | Loss: 0.03273 | Valid loss: 1.239 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  84 | Loss: 0.0316 | Valid loss: 1.246 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  85 | Loss: 0.03053 | Valid loss: 1.253 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  86 | Loss: 0.02952 | Valid loss: 1.26 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  87 | Loss: 0.02857 | Valid loss: 1.267 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  88 | Loss: 0.02767 | Valid loss: 1.273 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  89 | Loss: 0.02682 | Valid loss: 1.28 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  90 | Loss: 0.02602 | Valid loss: 1.286 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  91 | Loss: 0.02525 | Valid loss: 1.293 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  92 | Loss: 0.02453 | Valid loss: 1.299 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  93 | Loss: 0.02384 | Valid loss: 1.305 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  94 | Loss: 0.02318 | Valid loss: 1.311 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  95 | Loss: 0.02256 | Valid loss: 1.317 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  96 | Loss: 0.02197 | Valid loss: 1.323 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  97 | Loss: 0.0214 | Valid loss: 1.328 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  98 | Loss: 0.02086 | Valid loss: 1.334 | F1 : 1.0 | Valid F1: 0.5823
+
+
+Epoch:  99 | Loss: 0.02034 | Valid loss: 1.339 | F1 : 1.0 | Valid F1: 0.5823
+Evaluating Test Dataset
+Test F1: 0.5905 | Test Acc: 0.5957 
+Training torch Neural Network on questions dataset
+
+
+Epoch:   0 | Loss: 1.653 | Valid loss: 1.659 | F1 : 0.2037 | Valid F1: 0.2194
+
+
+Epoch:   1 | Loss: 1.648 | Valid loss: 1.653 | F1 : 0.2124 | Valid F1: 0.2199
+
+
+Epoch:   2 | Loss: 1.637 | Valid loss: 1.644 | F1 : 0.2123 | Valid F1: 0.2266
+
+
+Epoch:   3 | Loss: 1.617 | Valid loss: 1.624 | F1 : 0.2167 | Valid F1: 0.237
+
+
+Epoch:   4 | Loss: 1.569 | Valid loss: 1.58 | F1 : 0.2477 | Valid F1: 0.2745
+
+
+Epoch:   5 | Loss: 1.478 | Valid loss: 1.49 | F1 : 0.3008 | Valid F1: 0.3214
+
+
+Epoch:   6 | Loss: 1.366 | Valid loss: 1.379 | F1 : 0.3429 | Valid F1: 0.3545
+
+
+Epoch:   7 | Loss: 1.278 | Valid loss: 1.303 | F1 : 0.3695 | Valid F1: 0.3649
+
+
+Epoch:   8 | Loss: 1.214 | Valid loss: 1.255 | F1 : 0.4506 | Valid F1: 0.4278
+
+
+Epoch:   9 | Loss: 1.152 | Valid loss: 1.212 | F1 : 0.5398 | Valid F1: 0.5156
+
+
+Epoch:  10 | Loss: 1.083 | Valid loss: 1.162 | F1 : 0.6005 | Valid F1: 0.5578
+
+
+Epoch:  11 | Loss: 1.005 | Valid loss: 1.103 | F1 : 0.6512 | Valid F1: 0.5882
+
+
+Epoch:  12 | Loss: 0.9238 | Valid loss: 1.042 | F1 : 0.6957 | Valid F1: 0.6175
+
+
+Epoch:  13 | Loss: 0.8424 | Valid loss: 0.9809 | F1 : 0.7252 | Valid F1: 0.6546
+
+
+Epoch:  14 | Loss: 0.7643 | Valid loss: 0.9237 | F1 : 0.7524 | Valid F1: 0.6849
+
+
+Epoch:  15 | Loss: 0.6934 | Valid loss: 0.8741 | F1 : 0.7787 | Valid F1: 0.6964
+
+
+Epoch:  16 | Loss: 0.6342 | Valid loss: 0.8374 | F1 : 0.7908 | Valid F1: 0.7158
+
+
+Epoch:  17 | Loss: 0.5885 | Valid loss: 0.816 | F1 : 0.8019 | Valid F1: 0.7107
+
+
+Epoch:  18 | Loss: 0.5548 | Valid loss: 0.8074 | F1 : 0.8121 | Valid F1: 0.7018
+
+
+Epoch:  19 | Loss: 0.5297 | Valid loss: 0.8075 | F1 : 0.8154 | Valid F1: 0.6994
+Evaluating Test Dataset
+Test F1: 0.7286 | Test Acc: 0.731 
+Training torch Neural Network on odia dataset
+
+
+Epoch:   0 | Loss: 1.067 | Valid loss: 1.077 | F1 : 0.2859 | Valid F1: 0.2772
+
+
+Epoch:   1 | Loss: 1.059 | Valid loss: 1.069 | F1 : 0.2859 | Valid F1: 0.2772
+
+
+Epoch:   2 | Loss: 1.037 | Valid loss: 1.048 | F1 : 0.291 | Valid F1: 0.2815
+
+
+Epoch:   3 | Loss: 0.9625 | Valid loss: 0.9749 | F1 : 0.5914 | Valid F1: 0.5582
+
+
+Epoch:   4 | Loss: 0.8226 | Valid loss: 0.8345 | F1 : 0.6394 | Valid F1: 0.6546
+
+
+Epoch:   5 | Loss: 0.7209 | Valid loss: 0.7376 | F1 : 0.6858 | Valid F1: 0.6824
+
+
+Epoch:   6 | Loss: 0.6377 | Valid loss: 0.6618 | F1 : 0.7456 | Valid F1: 0.7435
+
+
+Epoch:   7 | Loss: 0.5566 | Valid loss: 0.5903 | F1 : 0.7886 | Valid F1: 0.7684
+
+
+Epoch:   8 | Loss: 0.4989 | Valid loss: 0.5452 | F1 : 0.811 | Valid F1: 0.7831
+
+
+Epoch:   9 | Loss: 0.4649 | Valid loss: 0.524 | F1 : 0.8242 | Valid F1: 0.7858
+Evaluating Test Dataset
+Test F1: 0.8074 | Test Acc: 0.807 
+Evaluation of torch Neural Network on Products dataset
+Evaluation of torch Neural Network on 4dim dataset
+Evaluation of torch Neural Network on questions dataset
+Evaluation of torch Neural Network on odia dataset

@@ -1,0 +1,24 @@
+wandb: Currently logged in as: zhpinkman. Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.13.4 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.13.3
+wandb: Run data is saved locally in /cluster/raid/home/zhivar.sourati/Advanced_NLP_course_HW2/wandb/run-20221011_023325-gdy7ddym
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run lilac-night-5
+wandb: ⭐️ View project at https://wandb.ai/zhpinkman/Advanced%20NLP%20A2%20-%20torch_products
+wandb: 🚀 View run at https://wandb.ai/zhpinkman/Advanced%20NLP%20A2%20-%20torch_products/runs/gdy7ddym
+  0%|          | 0/10 [00:00<?, ?it/s]
+0it [00:00, ?it/s][A
+1it [00:00,  5.16it/s][A
+4it [00:00, 15.34it/s][A
+7it [00:00, 20.38it/s][A
+11it [00:00, 24.67it/s][A
+15it [00:00, 26.90it/s][A
+19it [00:00, 27.63it/s][A
+22it [00:00, 27.48it/s][A
+25it [00:01, 27.38it/s][A
+29it [00:01, 29.20it/s][A
+33it [00:01, 29.97it/s][A
+37it [00:01, 30.66it/s][A
+41it [00:01, 30.16it/s][A
+45it [00:01, 30.41it/s][Aslurmstepd: error: *** JOB 6891 ON node01 CANCELLED AT 2022-10-11T02:33:31 ***
