@@ -22,21 +22,17 @@ class NNComp(ABC):
         raise NotImplemented
 
 
+def tanh(x: np.array) -> np.array:
+    return np.tanh(x)
+
+
+def d_tanh(x: np.array, incoming_grad: np.array) -> np.array:
+    dx = 1. - np.square(np.tanh(x))
+    return np.multiply(dx, incoming_grad)
+
+
 def relu(x: np.array) -> np.array:
     return np.multiply(x, x > 0)
-
-
-def sigmoid(x: np.array) -> np.array:
-    return 1/(1 + np.exp(-x))
-
-
-def d_sigmoid(x: np.array, incoming_grad: np.array) -> np.array:
-    sigma = sigmoid(x)
-    return np.multiply(np.multiply(sigma, 1 - sigma), incoming_grad)
-
-
-def softmax(x: np.array) -> np.array:
-    return np.exp(x) / np.sum(np.exp(x), axis=1, keepdims=True)
 
 
 def d_relu(x: np.array, incoming_grad: np.array):
@@ -47,6 +43,20 @@ def d_relu(x: np.array, incoming_grad: np.array):
     mask = np.ones_like(x)
     dx = np.multiply(mask, x > 0)
     return np.multiply(incoming_grad, dx)
+
+
+def sigmoid(x: np.array) -> np.array:
+    return 1/(1 + np.exp(-x))
+
+
+def d_sigmoid(x: np.array, incoming_grad: np.array) -> np.array:
+    sigma = sigmoid(x)
+    dx = np.multiply(sigma, 1 - sigma)
+    return np.multiply(dx, incoming_grad)
+
+
+def softmax(x: np.array) -> np.array:
+    return np.exp(x) / np.sum(np.exp(x), axis=1, keepdims=True)
 
 
 class DropoutLayer(NNComp):
