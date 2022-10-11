@@ -18,6 +18,10 @@ if __name__ == '__main__':
     model = NeuralModel.load_model(args.m)
 
     dataset = Dataset(file=args.i, with_labels=False)
+    # if model.tf_idf_vectorizer is not None:
+    #     dataset.set_text(
+    #         model.transform_tf_idf(texts=dataset.texts)
+    #     )
 
     preds = model.classify(dataset)
 
