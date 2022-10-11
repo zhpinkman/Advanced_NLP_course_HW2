@@ -35,6 +35,11 @@ def relu(x: np.array) -> np.array:
     return np.multiply(x, x > 0)
 
 
+def clip(gradient: np.array, max_value: float) -> np.array:
+    np.clip(gradient, -max_value, max_value, out=gradient)
+    return gradient
+
+
 def d_relu(x: np.array, incoming_grad: np.array):
     # let's have g = Relu(x),
     # then dg is the incoming_grad and we want the dx to be returned
@@ -187,10 +192,10 @@ class FeedForwardNetwork(NNComp):
                               self.params["dz1"]) / num_examples + self.params["W1"] / num_examples * self.weight_decay
         self.params["db1"] = np.mean(self.params["dz1"], axis=0, keepdims=True)
 
-    def update_weights(self, learning_rate):
+    def update_weights(self, learning_rate, clip_value=5):
         for i in range(len(self.num_hiddens) + 1):
             index = i + 1
             self.params[f"W{index}"] -= learning_rate * \
-                self.params[f"dW{index}"]
+                clip(self.params[f"dW{index}"], max_value=clip_value)
             self.params[f"b{index}"] -= learning_rate * \
-                self.params[f"db{index}"]
+                clip(self.params[f"db{index}"], max_value=clip_value)
