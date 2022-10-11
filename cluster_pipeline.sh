@@ -35,12 +35,12 @@ python3 train.py \
 
 echo "Training simple Neural Network on 4dim dataset"
 python3 train.py \
-    -u 64,32 \
-    -l 1e-2 \
+    -u 32,32,32 \
+    -l 2e-2 \
     -f 200 \
-    -w 0.001 \
     -b 16 \
-    -e 60 \
+    -e 40 \
+    -w 0.001 \
     -E glove.6B.50d.txt \
     -i datasets/custom_dataset/4dim.train.train.txt \
     -o 4dim.model \
@@ -84,11 +84,11 @@ python3 train.py \
     --test_labels datasets/custom_dataset/odiya.train.test_labels.txt \
     --wandb_comment odiya
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 
 echo "Evaluation of simple Neural Network on Products dataset"
@@ -102,6 +102,8 @@ python3 evaluate.py \
     --predictions tmp/products.predictions \
     --output_file tmp/products.results
 
+cat tmp/products.results
+
 echo "Evaluation of simple Neural Network on 4dim dataset"
 python3 classify.py \
     -m 4dim.model \
@@ -112,6 +114,8 @@ python3 evaluate.py \
     --labels datasets/custom_dataset/4dim.train.test_labels.txt \
     --predictions tmp/4dim.predictions \
     --output_file tmp/4dim.results
+
+cat tmp/4dim.results
 
 echo "Evaluation of simple Neural Network on questions dataset"
 python3 classify.py \
@@ -124,6 +128,8 @@ python3 evaluate.py \
     --predictions tmp/questions.predictions \
     --output_file tmp/questions.results
 
+cat tmp/questions.results
+
 echo "Evaluation of simple Neural Network on odiya dataset"
 python3 classify.py \
     -m odiya.model \
@@ -134,6 +140,8 @@ python3 evaluate.py \
     --labels datasets/custom_dataset/odiya.train.test_labels.txt \
     --predictions tmp/odiya.predictions \
     --output_file tmp/odiya.results
+
+cat tmp/odiya.results
 
 conda deactivate
 
