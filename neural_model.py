@@ -1,5 +1,6 @@
 from typing import List
 import string
+import pandas as pd
 import re
 import wandb
 from tqdm import tqdm
@@ -8,6 +9,7 @@ from model import Model
 from nn_layers import FeedForwardNetwork
 import numpy as np
 from IPython import embed
+from sklearn.feature_extraction.text import TfidfVectorizer
 import io
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import f1_score, accuracy_score
@@ -43,6 +45,7 @@ class NeuralModel(Model):
         self.num_features = list(self.embedding.values())[0].shape[0]
         self.label_set = label_set
         self.ohe = OneHotEncoder()
+        self.tf_idf_vectorizer = None
         self.label2id = dict(zip(
             self.label_set,
             list(range(len(self.label_set)))
@@ -71,16 +74,35 @@ class NeuralModel(Model):
                         if word not in stopwords])
         return text
 
+    def fit_tf_idf(self, texts: List[str]) -> None:
+        self.tf_idf_vectorizer = TfidfVectorizer(
+            min_df=0.01, max_df=0.99, max_features=int(1e5))
+        self.tf_idf_vectorizer.fit(texts)
+
+    def transform_tf_idf(self, texts: List[str]) -> List[str]:
+        df = pd.DataFrame(
+            self.tf_idf_vectorizer.transform(texts).A,
+            columns=self.tf_idf_vectorizer.get_feature_names_out()
+        ).T
+        filtered_texts = []
+        for i, text in tqdm(enumerate(texts), leave=False):
+            important_words = df.nlargest(self.max_seq_len, i).index.tolist()
+            filtered_texts.append(
+                ' '.join([word for word in text.split()
+                         if word in important_words])
+            )
+        return filtered_texts
+
     def tokenize(self, texts: List[str]):
         inputs = np.zeros(
             shape=[len(texts), self.max_seq_len * self.num_features])
+        if 'odiya' not in self.data_file_name and 'odia' not in self.data_file_name:
+            texts = [self.preprocess(text) for text in texts]
+
         for i, text in enumerate(texts):
             unk_counter = 0
             text_embedding = list()
-            if 'odiya' not in self.data_file_name:
-                words = self.preprocess(text).split()
-            else:
-                words = text.split()
+            words = text.split()
 
             for word in words[:min(len(words), self.max_seq_len)]:
                 if word.strip() in self.embedding:
