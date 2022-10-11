@@ -31,6 +31,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--test_labels', help="label file of the test split", type=str
     )
+    parser.add_argument(
+        '--tfidf', help="whether to use tf-idf to filter words or not", action=argparse.BooleanOptionalAction
+    )
     parser.add_argument('-o', type=str, help='model file to be written')
     parser.add_argument('--wandb_comment',
                         help="comment to append at the end of wandb project", type=str)
@@ -52,6 +55,22 @@ if __name__ == '__main__':
         data_file_name=args.i,
         dropout=args.dropout
     )
+
+    if args.tfidf:
+        model.fit_tf_idf(texts=train_dataset.texts)
+        print('tf idf fitted')
+
+        train_dataset.set_text(
+            model.transform_tf_idf(texts=train_dataset.texts)
+        )
+
+        dev_dataset.set_text(
+            model.transform_tf_idf(texts=dev_dataset.texts)
+        )
+
+        test_dataset.set_text(
+            model.transform_tf_idf(texts=test_dataset.texts)
+        )
 
     model.train(
         dataset=train_dataset,
