@@ -1,4 +1,0 @@
-Results comparing files datasets/custom_dataset/odiya.train.test_labels.txt and tmp/torch.odiya.predictions 
-
-accuracy: 0.8026315789473685 
-f1_score: 0.8028759536775941 

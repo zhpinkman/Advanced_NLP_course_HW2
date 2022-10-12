@@ -1,4 +1,0 @@
-Results comparing files datasets/custom_dataset/products.train.test_labels.txt and tmp/torch.products.predictions 
-
-accuracy: 0.707225630538514 
-f1_score: 0.7080457495187914 

@@ -11,3 +11,6 @@ wandb/**
 __MACOSX/**
 .vscode/**
 **/*.zip
+logs/**
+tmp/*.predictions
+tmp/*.results

@@ -21,6 +21,9 @@ class Dataset:
         else:
             return self.texts[index], None
 
+    def set_text(self, texts):
+        self.texts = texts
+
     @property
     def label_set(self):
         if self.labels:

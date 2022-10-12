@@ -35,12 +35,12 @@ python3 train.py \
 
 echo "Training simple Neural Network on 4dim dataset"
 python3 train.py \
-    -u 32,32,32 \
-    -l 2e-2 \
+    -u 64,32 \
+    -l 1e-2 \
     -f 200 \
-    -b 16 \
-    -e 40 \
     -w 0.001 \
+    -b 16 \
+    -e 60 \
     -E glove.6B.50d.txt \
     -i datasets/custom_dataset/4dim.train.train.txt \
     -o 4dim.model \

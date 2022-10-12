@@ -1,4 +1,0 @@
-Results comparing files datasets/custom_dataset/products.train.test_labels.txt and tmp/products.predictions 
-
-accuracy: 0.7089297886843899 
-f1_score: 0.7095142731695909 

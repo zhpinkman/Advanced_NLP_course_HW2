@@ -1,4 +1,0 @@
-Results comparing files datasets/custom_dataset/questions.train.test_labels.txt and tmp/torch.questions.predictions 
-
-accuracy: 0.7309782608695652 
-f1_score: 0.7286132999192109 

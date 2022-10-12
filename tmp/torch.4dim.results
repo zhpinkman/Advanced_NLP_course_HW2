@@ -1,4 +1,0 @@
-Results comparing files datasets/custom_dataset/4dim.train.test_labels.txt and tmp/torch.4dim.predictions 
-
-accuracy: 0.5957446808510638 
-f1_score: 0.5905152724561441 

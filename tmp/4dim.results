@@ -1,4 +1,0 @@
-Results comparing files datasets/custom_dataset/4dim.train.test_labels.txt and tmp/4dim.predictions 
-
-accuracy: 0.6312056737588653 
-f1_score: 0.6295995115041311 
