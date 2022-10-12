@@ -2,7 +2,7 @@ from typing import List
 import string
 import pandas as pd
 import re
-import wandb
+# import wandb
 from tqdm import tqdm
 from dataset import DataLoader, Dataset
 from model import Model
@@ -182,16 +182,16 @@ class NeuralModel(Model):
         self.batch_size = batch_size
         self.network.train()
 
-        wandb.init(
-            project=f"Advanced NLP A2 - {wandb_comment}",
-            config={
-                "max_seq_len": self.max_seq_len,
-                "num_hiddens": self.num_hiddens,
-                "learning_rate": learning_rate,
-                "num_epochs": num_epochs,
-                "batch_size": batch_size
-            }
-        )
+        # wandb.init(
+        #     project=f"Advanced NLP A2 - {wandb_comment}",
+        #     config={
+        #         "max_seq_len": self.max_seq_len,
+        #         "num_hiddens": self.num_hiddens,
+        #         "learning_rate": learning_rate,
+        #         "num_epochs": num_epochs,
+        #         "batch_size": batch_size
+        #     }
+        # )
         data_loader = DataLoader(dataset=dataset, batch_size=batch_size)
         for epoch in tqdm(range(num_epochs), leave=False):
             epoch_loss = []
@@ -237,7 +237,7 @@ class NeuralModel(Model):
                 print("Epoch: {:>3} | Loss: ".format(epoch) + f"{all_metrics['train_loss']:.4}" + " | Valid loss: " +
                       f"{all_metrics['dev_loss']:.4} | F1 : " + f"{all_metrics['train_f1']:.4} | Valid F1: " + f"{all_metrics['dev_f1']:.4}")
 
-            wandb.log(all_metrics, step=epoch)
+            # wandb.log(all_metrics, step=epoch)
         if test_dataset:
             test_metrics = self.evaluate(
                 dataset=test_dataset,
