@@ -38,6 +38,7 @@ class NeuralModel(Model):
     def __init__(self, num_hiddens: List[int], weight_decay: float, max_seq_len: int, embedding_file: str, label_set: set, data_file_name: str, dropout: float = 0):
         self.num_hiddens = num_hiddens
         self.weight_decay = weight_decay
+        self.embedding_file = embedding_file
         self.embedding = load_vectors(fname=embedding_file)
         self.max_seq_len = max_seq_len
         self.data_file_name = data_file_name
@@ -61,6 +62,15 @@ class NeuralModel(Model):
             num_labels=len(self.label_set),
             dropout=self.dropout
         )
+
+    # TODO: add the load_embedding_file to the classify
+
+    def load_embedding_file(self):
+        self.embedding = load_vectors(fname=self.embedding_file)
+
+    def prepare_model_to_be_saved(self):
+        self.embedding = None
+        self.network.prepare_model_to_be_saved()
 
     def preprocess(self, text: str) -> str:
         text = text.lower()

@@ -39,6 +39,7 @@ class TorchModel(Model):
         self.weight_decay = weight_decay
         self.data_file_name = data_file_name
         self.dropout = dropout
+        self.embedding_file = embedding_file
         self.embedding = load_vectors(fname=embedding_file)
         self.max_seq_len = max_seq_len
         self.num_features = list(self.embedding.values())[0].shape[0]
@@ -82,6 +83,12 @@ class TorchModel(Model):
         )
 
         self.model = nn.Sequential(*layers)
+
+    def load_embedding_file(self):
+        self.embedding = load_vectors(fname=self.embedding_file)
+
+    def prepare_model_to_be_saved(self):
+        self.embedding = None
 
     def preprocess(self, text: str) -> str:
         text = text.lower()

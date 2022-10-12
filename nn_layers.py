@@ -129,6 +129,11 @@ class FeedForwardNetwork(NNComp):
             self.params[f"z{index}"] = None
             self.params[f"a{index}"] = None
 
+    def prepare_model_to_be_saved(self):
+        for param in self.params.keys():
+            if not param.startswith("W") and not param.startswith("b") and not param.startswith("dropout"):
+                self.params[param] = None
+
     def train(self):
         self.training = True
 
