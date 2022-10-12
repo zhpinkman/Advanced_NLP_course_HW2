@@ -1,19 +1,19 @@
 
-# echo "Training simple Neural Network on Products dataset"
-# python3 train.py \
-#     -u 128,64 \
-#     -l 8e-2 \
-#     -f 200 \
-#     -b 64 \
-#     -e 10 \
-#     -E glove.6B.50d.txt \
-#     -i datasets/custom_dataset/products.train.train.txt \
-#     -o products.model \
-#     --dev_text datasets/custom_dataset/products.train.dev.txt \
-#     --dev_labels datasets/custom_dataset/products.train.dev_labels.txt \
-#     --test_text datasets/custom_dataset/products.train.test.txt \
-#     --test_labels datasets/custom_dataset/products.train.test_labels.txt \
-#     --wandb_comment products
+echo "Training simple Neural Network on Products dataset"
+python3 train.py \
+    -u 128,64 \
+    -l 8e-2 \
+    -f 200 \
+    -b 64 \
+    -e 10 \
+    -E glove.6B.50d.txt \
+    -i datasets/custom_dataset/products.train.train.txt \
+    -o products.model \
+    --dev_text datasets/custom_dataset/products.train.dev.txt \
+    --dev_labels datasets/custom_dataset/products.train.dev_labels.txt \
+    --test_text datasets/custom_dataset/products.train.test.txt \
+    --test_labels datasets/custom_dataset/products.train.test_labels.txt \
+    --wandb_comment products
 
 
 echo "Training simple Neural Network on 4dim dataset"
@@ -35,38 +35,38 @@ python3 train.py \
 
 
 
-# echo "Training simple Neural Network on questions dataset"
-# python3 train.py \
-#     -u 128,64 \
-#     -l 8e-2 \
-#     -f 25 \
-#     -b 32 \
-#     -e 10 \
-#     -E ufvytar.100d.txt \
-#     -i datasets/custom_dataset/questions.train.train.txt \
-#     -o questions.model \
-#     --dev_text datasets/custom_dataset/questions.train.dev.txt \
-#     --dev_labels datasets/custom_dataset/questions.train.dev_labels.txt \
-#     --test_text datasets/custom_dataset/questions.train.test.txt \
-#     --test_labels datasets/custom_dataset/questions.train.test_labels.txt \
-#     --wandb_comment questions
+echo "Training simple Neural Network on questions dataset"
+python3 train.py \
+    -u 128,64 \
+    -l 8e-2 \
+    -f 25 \
+    -b 32 \
+    -e 10 \
+    -E ufvytar.100d.txt \
+    -i datasets/custom_dataset/questions.train.train.txt \
+    -o questions.model \
+    --dev_text datasets/custom_dataset/questions.train.dev.txt \
+    --dev_labels datasets/custom_dataset/questions.train.dev_labels.txt \
+    --test_text datasets/custom_dataset/questions.train.test.txt \
+    --test_labels datasets/custom_dataset/questions.train.test_labels.txt \
+    --wandb_comment questions
 
 
-# echo "Training simple Neural Network on odiya dataset"
-# python3 train.py \
-#     -u 128,64 \
-#     -l 5e-2 \
-#     -f 20 \
-#     -b 32 \
-#     -e 10 \
-#     -E fasttext.wiki.300d.vec \
-#     -i datasets/custom_dataset/odiya.train.train.txt \
-#     -o odiya.model \
-#     --dev_text datasets/custom_dataset/odiya.train.dev.txt \
-#     --dev_labels datasets/custom_dataset/odiya.train.dev_labels.txt \
-#     --test_text datasets/custom_dataset/odiya.train.test.txt \
-#     --test_labels datasets/custom_dataset/odiya.train.test_labels.txt \
-#     --wandb_comment odiya
+echo "Training simple Neural Network on odiya dataset"
+python3 train.py \
+    -u 128,64 \
+    -l 5e-2 \
+    -f 20 \
+    -b 32 \
+    -e 10 \
+    -E fasttext.wiki.300d.vec \
+    -i datasets/custom_dataset/odiya.train.train.txt \
+    -o odiya.model \
+    --dev_text datasets/custom_dataset/odiya.train.dev.txt \
+    --dev_labels datasets/custom_dataset/odiya.train.dev_labels.txt \
+    --test_text datasets/custom_dataset/odiya.train.test.txt \
+    --test_labels datasets/custom_dataset/odiya.train.test_labels.txt \
+    --wandb_comment odiya
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 

@@ -6,7 +6,6 @@ unk-odiya.vec
 unk-eng.vec
 **/__pycache__/**
 source.ipynb
-*.model
 wandb/**
 __MACOSX/**
 .vscode/**
