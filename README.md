@@ -3,3 +3,12 @@ This assignment is about using the infrastructure you built in HW1, now applying
 
 
 get the embedding files from [link](https://drive.google.com/file/d/1DVcwpvvP2j8EjqmUROZKzFkzoF8HXDC4/view).
+
+
+All the experiments, training and evaluation scripts are in `pipeline.sh`, `torch_pipeline.sh`. 
+
+There are a couple of notes that you have to consider before running the models
+
+    The embedding files should contain the UNK token also included as a separate token
+    Also if you wanted to run the models on a slurm based cluster you can use the scripts `cluster_pipeline.sh`, `cluster_torch_pipeline.sh`
+    

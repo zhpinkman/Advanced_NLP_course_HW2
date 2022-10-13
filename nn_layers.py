@@ -70,6 +70,7 @@ class DropoutLayer(NNComp):
         self.mask = None
 
     def forward(self, x):
+        # Keep track of the weights that were masked so in the back propagation as well we can apply the mask.
         self.mask = (np.random.rand(*x.shape) > self.prob).astype(int)
         return np.multiply(self.mask, x) / (1.0 - self.prob)
 
@@ -100,10 +101,14 @@ class FeedForwardNetwork(NNComp):
 
         # Weight matrices
 
+        # Dictionary to store all the parameters of the model as well as the variables computed at runtime for
+        # forward pass and back propagation such as the gradients.
         self.params = dict()
+
         np.random.seed(77)
         self.params['W1'] = np.random.randn(
             num_features * max_seq_len, self.num_hiddens[0]) * np.sqrt(2/(num_features * max_seq_len))
+        # He initialization
         self.params['b1'] = np.zeros(shape=[1, self.num_hiddens[0]])
         self.params[f'dropout1'] = DropoutLayer(self.dropout)
 
@@ -112,16 +117,18 @@ class FeedForwardNetwork(NNComp):
             np.random.seed(66 + index)
             self.params[f"W{index}"] = np.random.randn(
                 self.num_hiddens[i - 1], self.num_hiddens[i]) * np.sqrt(2/(self.num_hiddens[i - 1]))
+            # He initialization
             self.params[f"b{index}"] = np.zeros(shape=[1, self.num_hiddens[i]])
             self.params[f'dropout{index}'] = DropoutLayer(self.dropout)
 
         np.random.seed(55)
         self.params[f"W{len(self.num_hiddens) + 1}"] = np.random.randn(
             self.num_hiddens[-1], num_labels) * np.sqrt(2/self.num_hiddens[-1])
+        # He initialization
         self.params[f"b{len(self.num_hiddens) + 1}"] = np.zeros(
             shape=[1, num_labels])
 
-        # To compute the gradient in the backward pass
+        # store the value of the intermediate layers to compute the gradient in the backward pass
 
         self.params['x'] = None
         for i in range(len(self.num_hiddens) + 1):
@@ -130,6 +137,8 @@ class FeedForwardNetwork(NNComp):
             self.params[f"a{index}"] = None
 
     def prepare_model_to_be_saved(self):
+        """remove the parameters that are not necessary to store such as the gradients
+        """
         for param in self.params.keys():
             if not param.startswith("W") and not param.startswith("b") and not param.startswith("dropout"):
                 self.params[param] = None
@@ -141,6 +150,12 @@ class FeedForwardNetwork(NNComp):
         self.training = False
 
     def forward(self, x: np.array):
+        """perform the forward pass
+
+        Args:
+            x (np.array): input vectors
+
+        """
         self.params['x'] = x
 
         self.params["z1"] = x @ self.params["W1"] + self.params["b1"]
@@ -169,6 +184,11 @@ class FeedForwardNetwork(NNComp):
         return self.params[f"a{len(self.num_hiddens) + 1}"]
 
     def backward(self, incoming_grad):
+        """perform backward pass
+
+        Args:
+            incoming_grad (np.array): the incoming gradient which is the gradient of last non activated Z vector
+        """
         # incoming_grad being dZ{len(self.num_hiddens) + 1}
         self.params[f"dz{len(self.num_hiddens) + 1}"] = incoming_grad
         num_examples = incoming_grad.shape[0]
@@ -197,7 +217,13 @@ class FeedForwardNetwork(NNComp):
                               self.params["dz1"]) / num_examples + self.params["W1"] / num_examples * self.weight_decay
         self.params["db1"] = np.mean(self.params["dz1"], axis=0, keepdims=True)
 
-    def update_weights(self, learning_rate, clip_value=5):
+    def update_weights(self, learning_rate: float, clip_value: float = 5.0):
+        """update the weights using the gradients and learning rate
+
+        Args:
+            learning_rate (float): learning rate
+            clip_value (int, optional): value to clip the gradients to when exceeding. Defaults to 5.
+        """
         for i in range(len(self.num_hiddens) + 1):
             index = i + 1
             self.params[f"W{index}"] -= learning_rate * \

@@ -18,7 +18,15 @@ from nltk.corpus import stopwords
 stopwords = stopwords.words('english')
 
 
-def load_vectors(fname):
+def load_vectors(fname: str):
+    """Load the embedding vectors 
+
+    Args:
+        fname (str): file containing the embedding vectors word per line
+
+    Returns:
+        Dictionary of the words and their embedding vectors
+    """
     fin = io.open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
     data = {}
     for line in fin:
@@ -28,6 +36,17 @@ def load_vectors(fname):
 
 
 def loss_func(true_labels: np.array, predictions_probs: np.array, params, epsilon=1e-9) -> float:
+    """Compute the loss function using the true_labels in One Hot Encoded format and the predictions probs which is the output of softmax layer
+
+    Args:
+        true_labels (np.array): 
+        predictions_probs (np.array): 
+        params (_type_): 
+        epsilon (_type_, optional): . Defaults to 1e-9.
+
+    Returns:
+        float: Loss value
+    """
     predictions_probs = np.clip(predictions_probs, epsilon, 1 - epsilon)
     true_labels_probs = np.sum(np.multiply(
         true_labels, predictions_probs), axis=-1)
@@ -62,8 +81,6 @@ class NeuralModel(Model):
             num_labels=len(self.label_set),
             dropout=self.dropout
         )
-
-    # TODO: add the load_embedding_file to the classify
 
     def load_embedding_file(self):
         self.embedding = load_vectors(fname=self.embedding_file)
@@ -104,6 +121,14 @@ class NeuralModel(Model):
         return filtered_texts
 
     def tokenize(self, texts: List[str]):
+        """Tokenize the texts into the input vectors suitable to be fed to the neural network first layer
+
+        Args:
+            texts (List[str]): List of texts in the data
+
+        Returns:
+            _type_: input vectors ready to pass to the network
+        """
         inputs = np.zeros(
             shape=[len(texts), self.max_seq_len * self.num_features])
         if 'odiya' not in self.data_file_name and 'odia' not in self.data_file_name:
@@ -134,6 +159,15 @@ class NeuralModel(Model):
         return inputs
 
     def evaluate(self, dataset: Dataset, batch_size: int):
+        """Evaluate the performance of the model on given dataset
+
+        Args:
+            dataset (Dataset): dataset to evaluate the model on
+            batch_size (int): batch_size
+
+        Returns:
+            Dict: Dictionary containing the metrics computed 
+        """
         self.network.eval()
         all_predictions = []
         true_labels = []
@@ -179,6 +213,17 @@ class NeuralModel(Model):
         dev_dataset: Dataset = None,
         test_dataset: Dataset = None
     ):
+        """train the model given the datasets for train, dev, test split and also given hyperparameters
+
+        Args:
+            dataset (Dataset): train dataset
+            batch_size (int): batch size
+            num_epochs (int): num epochs to do training
+            learning_rate (float): learning rate
+            wandb_comment (str): comment to init the wandb project with
+            dev_dataset (Dataset, optional): dev split dataset. Defaults to None.
+            test_dataset (Dataset, optional): test split dataset. Defaults to None.
+        """
         self.batch_size = batch_size
         self.network.train()
 
@@ -202,8 +247,10 @@ class NeuralModel(Model):
                 labels_ohe = self.ohe.transform(
                     np.array([self.label2id[label] for label in labels]).reshape(-1, 1)).A
 
+                # forward pass of the model
                 outputs = self.network.forward(inputs)
 
+                # compute the loss value
                 loss = loss_func(
                     true_labels=labels_ohe,
                     predictions_probs=outputs,
@@ -211,13 +258,17 @@ class NeuralModel(Model):
                 )
                 epoch_loss.append(loss)
 
+                # perform a individual backward pass
                 self.network.backward(
                     incoming_grad=outputs - labels_ohe
                 )
 
+                # update the weights of the model using the computed gradients in the backward pass
                 self.network.update_weights(
                     learning_rate=learning_rate
                 )
+
+            # compute and store the metrics related to performance of the model on train, dev, and test split
 
             all_metrics = dict()
             train_metrics = self.evaluate(
@@ -251,6 +302,14 @@ class NeuralModel(Model):
             )
 
     def classify(self, dataset: Dataset):
+        """Classify the data points in the given dataset
+
+        Args:
+            dataset (Dataset): dataset to predict the labels for
+
+        Returns:
+            List[Any]: list of predicted labels
+        """
         self.network.eval()
         all_predictions = []
 

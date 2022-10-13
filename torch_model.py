@@ -17,6 +17,14 @@ stopwords = stopwords.words('english')
 
 
 def load_vectors(fname):
+    """Load the embedding vectors
+
+    Args:
+        fname (str): file containing the embedding vectors word per line
+
+    Returns:
+        Dictionary of the words and their embedding vectors
+    """
     fin = io.open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
     data = {}
     for line in fin:
@@ -103,6 +111,14 @@ class TorchModel(Model):
         return text
 
     def tokenize(self, texts: List[str]):
+        """Tokenize the texts into the input vectors suitable to be fed to the neural network first layer
+
+        Args:
+            texts (List[str]): List of texts in the data
+
+        Returns:
+            _type_: input vectors ready to pass to the network
+        """
         inputs = np.zeros(
             shape=[len(texts), self.max_seq_len * self.num_features])
         for i, text in enumerate(texts):
@@ -133,6 +149,16 @@ class TorchModel(Model):
         return inputs
 
     def evaluate(self, dataset: Dataset, batch_size: int, criterion):
+        """Evaluate the performance of the model on given dataset
+
+        Args:
+            dataset (Dataset): dataset to evaluate the model on
+            batch_size (int): batch_size
+            criterion: the loss function used to compute the loss
+
+        Returns:
+            Dict: Dictionary containing the metrics computed
+        """
         self.model.eval()
         all_predictions = []
         true_labels = []
@@ -178,6 +204,17 @@ class TorchModel(Model):
         dev_dataset: Dataset = None,
         test_dataset: Dataset = None
     ):
+        """train the model given the datasets for train, dev, test split and also given hyperparameters
+
+        Args:
+            dataset (Dataset): train dataset
+            batch_size (int): batch size
+            num_epochs (int): num epochs to do training
+            learning_rate (float): learning rate
+            wandb_comment (str): comment to init the wandb project with
+            dev_dataset (Dataset, optional): dev split dataset. Defaults to None.
+            test_dataset (Dataset, optional): test split dataset. Defaults to None.
+        """
 
         # wandb.init(
         #     project=f"Advanced NLP A2 - {wandb_comment}",
@@ -249,6 +286,14 @@ class TorchModel(Model):
             )
 
     def classify(self, dataset: Dataset):
+        """Classify the data points in the given dataset
+
+        Args:
+            dataset (Dataset): dataset to predict the labels for
+
+        Returns:
+            List[Any]: list of predicted labels
+        """
         self.model.eval()
         all_predictions = []
         data_loader = DataLoader(dataset=dataset, batch_size=self.batch_size)

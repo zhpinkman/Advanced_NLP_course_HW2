@@ -4,12 +4,29 @@ from sklearn.metrics import f1_score, accuracy_score
 
 
 def read_labels(input_file: str) -> List[str]:
+    """read the labels from a file one label per line
+
+    Args:
+        input_file (str): file to read the labels from
+
+    Returns:
+        List[str]: labels
+    """
     with open(input_file, 'r') as f:
         data = f.read().splitlines()
     return data
 
 
 def compute_scores(true_labels: List[str], predictions: List[str]) -> Dict[str, float]:
+    """compute the accuracy and weighted f1 score
+
+    Args:
+        true_labels (List[str]): true labels
+        predictions (List[str]): predicted labels
+
+    Returns:
+        Dict[str, float]: _description_
+    """
     return {
         'accuracy': accuracy_score(y_true=true_labels, y_pred=predictions),
         'f1_score': f1_score(y_true=true_labels, y_pred=predictions, average="weighted")
